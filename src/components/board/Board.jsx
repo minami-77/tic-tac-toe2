@@ -1,7 +1,18 @@
 import './board.css';
 import Square from '../square/Square'
+import { useState } from "react";
 
 const Board = () => {
+  // set empty array called squares using useState so that it can be changed later
+  const [squares, setSquares] = useState([Array(9).fill(null)]);
+
+  // define function to handle the game
+  function handleClick(){
+    // if either one winned|| if already clicked, end the game
+
+    // else flip the clicked square
+
+  }
 
 
   return (
@@ -11,7 +22,10 @@ const Board = () => {
       </div>
       <div className="board-container">
         <div>
-        <Square/>
+        <Square
+          onClick={() => handleClick}
+          value={squares[0]}
+        />
         <Square/>
         <Square/>
         </div>
@@ -27,7 +41,7 @@ const Board = () => {
         </div>
     </div>
     <div>
-      <button>Reset</button>
+      <button className='reset-button'>Reset</button>
     </div>
     </>
 

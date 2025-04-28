@@ -1,4 +1,15 @@
 .board-container{
   text-align: center;
+  margin: 1rem;
+}
 
+.reset-button{
+  font-size: 1rem;
+  padding:0.5rem;
+  border-radius: 5px;
+  border: 0.5rem solid transparent
+}
+
+.reset-button:hover{
+  border-color: blue;
 }
