@@ -1,7 +1,6 @@
 import './square.css';
 
 const Square = ({handleClick, value}) => {
-
   return (
       <button className="square-button" onClick={handleClick}>
         {value}
@@ -9,4 +8,4 @@ const Square = ({handleClick, value}) => {
   );
 }
 
-export default Square
+export default Square;

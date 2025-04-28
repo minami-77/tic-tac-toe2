@@ -5,7 +5,7 @@ import { useState } from "react";
 const Board = () => {
   // set empty array called squares using useState so that it can be changed later
   // (initial state =[null,null,null,...null])
-  const [squares, setSquares] = useState([Array(9).fill(null)]);
+  const [squares, setSquares] = useState(Array(9).fill(null));
   // set default next player (X) (use boolean, no need function)
   const [xIsNext, setXIsNext] = useState(true);
 
@@ -37,10 +37,9 @@ const Board = () => {
     return null;
   }
 
-
   // define function to handle the game
   function handleClick(n){
-    console.log("clicked!");
+    console.log("handleClick called!", n);
     // if squares[n] is already clicked || either one winned -> end the game
     if (squares[n] !== null || whoIsWinner()){
       return;
@@ -63,7 +62,7 @@ const Board = () => {
       </div>
       <div className="board-container">
         <div>
-          <Square onClick={() => handleClick(0)} value={squares[0]} />
+          <Square onClick={() =>  { console.log('Square 0 clicked'); handleClick(0); }} value={squares[0]} />
           <Square onClick={() => handleClick(1)} value={squares[1]} />
           <Square onClick={() => handleClick(2)} value={squares[2]} />
         </div>
@@ -82,8 +81,7 @@ const Board = () => {
         <button className='reset-button'>Reset</button>
       </div>
     </>
-
   )
 }
 
-export default Board
+export default Board;
