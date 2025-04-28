@@ -1,0 +1,11 @@
+.square-button{
+  width: 5rem;
+  height: 5rem;
+  background-color: aquamarine;
+  border: 0.5rem solid transparent;
+  margin:0.5rem;
+}
+
+.square-button:hover{
+  border-color: blueviolet;
+}
