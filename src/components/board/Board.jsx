@@ -9,8 +9,9 @@ const Board = () => {
   // set default next player (X) (use boolean, no need function)
   const [xIsNext, setXIsNext] = useState(true);
 
-  // check squares value if they match the combination of game end
   function whoIsWinner(){
+  // check if there's winner
+  // square[n] combinations decide winner
     const combinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -24,6 +25,7 @@ const Board = () => {
       [2, 4, 6],
     ];
 
+    // check squares value if they match the combination of game end
     for ( let i = 0; i < combinations.length; i++ ){
       // Destructuring（分割代入:配列の中身をまとめて変数に取り出す書き方）
       const [a, b, c] = combinations[i];
@@ -33,8 +35,29 @@ const Board = () => {
         return  squares[a];
       }
     }
+    // check if draw |Array.every((x)x=>x===2);
+    // if every square has value, return draw.
+    if (squares.every((square) => square !== null)){
+      return "Draw"
+    }
     // otherwise no winner
     return null;
+  }
+
+  // set variable status to display winner or next player
+  let status;
+  // set variable winner to store the result of whoIsWinner
+  const winner = whoIsWinner();
+
+  // display draw, winner, or next player
+  // if value of winner equals "Draw"
+  if (winner === "Draw"){
+    status = <h2>{winner}!</h2>
+    //if winner seems truthy (X or O //not null, undefined...)
+  } else if (winner){
+    status = <h2>Winner is {winner} !</h2>;
+  } else {
+    status = <h2>Next Player is {xIsNext ? 'X': 'O'}</h2>
   }
 
   // define function to handle the game
@@ -55,13 +78,16 @@ const Board = () => {
     setXIsNext(!xIsNext);
   }
 
+  //define function to reset the game
+  function resetSquares(){
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
+  }
+
   return (
     <>
       <div>
-        {if (whoIsWinner!== null){
-        <h2>Player: {xIsNext ? 'X': 'O'}</h2>
-        }}
-
+        {status}
       </div>
       <div className="board-container">
         {/* onSquareClick (which calls function handleClick) is given to Square as props,
@@ -83,7 +109,8 @@ const Board = () => {
         </div>
       </div>
       <div>
-        <button className='reset-button'>Reset</button>
+        {/* when clicked, call resetSquare function */}
+        <button className='reset-button' onClick={resetSquares}>Reset</button>
       </div>
     </>
   )
