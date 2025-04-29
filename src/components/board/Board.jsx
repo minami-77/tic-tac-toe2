@@ -52,12 +52,12 @@ const Board = () => {
   // display draw, winner, or next player
   // if value of winner equals "Draw"
   if (winner === "Draw"){
-    status = <h2>{winner}!</h2>
+    status = <h2><span>{winner}!</span></h2>
     //if winner seems truthy (X or O //not null, undefined...)
   } else if (winner){
-    status = <h2>Winner is {winner} !</h2>;
+    status = <h2><span>Winner is  {winner} !</span></h2>;
   } else {
-    status = <h2>Next Player is {xIsNext ? 'X': 'O'}</h2>
+    status = <h2>Next Player is <span>{xIsNext ? 'X': 'O'}</span></h2>
   }
 
   // define function to handle the game
