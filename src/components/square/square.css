@@ -4,6 +4,11 @@
   background-color: aquamarine;
   border: 0.5rem solid transparent;
   margin:0.5rem;
+  font-size: 2rem;
+  /* 行全体(ボタン）の高さ指定 */
+  line-height: 5rem;
+  /* inline要素に対して縦位置をどうそろえるか。上にそろえることで、ボタン同士のズレ防止 （default:baseline)*/
+  vertical-align: top;
 }
 
 .square-button:hover{

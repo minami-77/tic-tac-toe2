@@ -58,23 +58,28 @@ const Board = () => {
   return (
     <>
       <div>
+        {if (whoIsWinner!== null){
         <h2>Player: {xIsNext ? 'X': 'O'}</h2>
+        }}
+
       </div>
       <div className="board-container">
+        {/* onSquareClick (which calls function handleClick) is given to Square as props,
+            value of squares[n] is given to Square as props value */}
         <div>
-          <Square onClick={() =>  { console.log('Square 0 clicked'); handleClick(0); }} value={squares[0]} />
-          <Square onClick={() => handleClick(1)} value={squares[1]} />
-          <Square onClick={() => handleClick(2)} value={squares[2]} />
+          <Square onSquareClick={() => handleClick(0)} value={squares[0]} />
+          <Square onSquareClick={() => handleClick(1)} value={squares[1]} />
+          <Square onSquareClick={() => handleClick(2)} value={squares[2]} />
         </div>
         <div>
-          <Square onClick={() => handleClick(3)} value={squares[3]} />
-          <Square onClick={() => handleClick(4)} value={squares[4]} />
-          <Square onClick={() => handleClick(5)} value={squares[5]} />
+          <Square onSquareClick={() => handleClick(3)} value={squares[3]} />
+          <Square onSquareClick={() => handleClick(4)} value={squares[4]} />
+          <Square onSquareClick={() => handleClick(5)} value={squares[5]} />
         </div>
         <div>
-          <Square onClick={() => handleClick(6)} value={squares[6]} />
-          <Square onClick={() => handleClick(7)} value={squares[7]} />
-          <Square onClick={() => handleClick(8)} value={squares[8]} />
+          <Square onSquareClick={() => handleClick(6)} value={squares[6]} />
+          <Square onSquareClick={() => handleClick(7)} value={squares[7]} />
+          <Square onSquareClick={() => handleClick(8)} value={squares[8]} />
         </div>
       </div>
       <div>
