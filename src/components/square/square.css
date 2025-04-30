@@ -7,7 +7,7 @@
   color: rgb(70, 70, 70);
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
   margin:0.5rem;
-  background-color: aquamarine;
+  background-color: rgb(229, 229, 229);
   border: 0.2rem solid transparent;
   border-radius: 10px;
   box-shadow: 0px 0px 5px white;
@@ -22,4 +22,13 @@
 .square-button:hover{
   border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 20px white;
+}
+
+.square-button .player1{
+  color:aquamarine
+}
+
+
+.square-button .player2{
+  color:deeppink
 }
