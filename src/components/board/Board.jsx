@@ -3,8 +3,14 @@ import Square from '../square/Square'
 import { useState } from "react";
 
 const Board = () => {
+  // Initialize variables
+
+  // define function to shuffle points on squares
+  function shufflePoints(){
+    return [10,10,10,0,0,0,-10,-10,-10].sort(()=> Math.random() - 0.5);
+  }
   // set an array for point of each squares, using useState so that it can be changed later
-  const [pointOfSquares, setPointOfSquares] = useState([10,10,10,0,0,0,-10,-10,-10]);
+  const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
   const [playerGetSquares, setPlayerGetSquares] = useState(Array(9).fill(null));
   // set variable for default next player (X) (use boolean, no need function)
@@ -12,8 +18,10 @@ const Board = () => {
   // set variable to store initial score of the players
   const [scoreX, setScoreX] = useState(0);
   const [scoreO, setScoreO] = useState(0);
+  // set variable for status (game continue or end)
+  const [status, setStatus] = useState("Next Player is X");
 
-  // define function to add bonus point (need argument)
+  // Define function to add bonus point (need argument)
   function bonusPoint(squares){
   // square[n] combinations for tic-tac-toe
     const combinations = [
@@ -40,49 +48,74 @@ const Board = () => {
     return null;
   }
 
-  // define function to handle the game
+  // Define function to handle the game
   function handleClick(n){
-    console.log("handleClick called!", n);
-    // if all playerGetSquares are already got -> end the game
-    if (playerGetSquares[n] !== null|| bonusPoint(playerGetSquares)){
+    if (playerGetSquares.every((square)=>square!==null)){
       return;
     }
-    // else (for empty squares) flip the clicked square
+    // When continue the game (for empty squares)
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerGetSquares = playerGetSquares.slice();
     // set variable for current player and give it a value X or O
     const currentPlayer = xIsNext ? "X" : "O";
-    // update the nextPlayerGetSquares with current player
+    // update the nth nextPlayerGetSquare(copied one) with current player
     nextPlayerGetSquares[n] = currentPlayer;
-    // update the newly created array
+    // update the newly created array(copied one)
     setPlayerGetSquares(nextPlayerGetSquares);
-    // calculate the score of X,O
+
+  // Calculate points of X and O
+  // set variables for calculation
     const point = pointOfSquares[n];
     const bonusPlayer = bonusPoint(nextPlayerGetSquares);
     const bonus = 10;
-
     if(xIsNext){
       setScoreX(prev => prev + point + (bonusPlayer === 'X' ? bonus : 0));
+
     } else{
       setScoreO(prev => prev + point + (bonusPlayer === 'O' ? bonus : 0));
     }
-    // set next player in turn for the next move
+
+    // When Game is Over
+    // set variable to store condition of end end (all playerGetSquares are filled)
+    const gameEnd = playerGetSquares.every(player =>player !== null);
+    // set initial value of winner
+    let winner = null;
+    // winner
+    if (gameEnd){
+      if (scoreX > scoreO){
+        winner = "X";
+      } else if (scoreO > scoreX) {
+        winner = "O";
+      } else {
+        winner = "Draw";
+      }
+    }
+
+    // manage the status (game over or game continue)
+    if (gameEnd){
+      const statusEnd = winner==="Draw"? "Draw": `Winner is${winner}`;
+      setStatus(statusEnd);
+    }else{
+      const statusContinue = `NextPlayer is ${xIsNext ? 'X' : 'O'}`;
+      setStatus(statusContinue);
+    }
+
+    // Set next player in turn for the next move
     setXIsNext(!xIsNext);
   }
 
   //define function to reset the game
   function resetSquares(){
-    setPointOfSquares([10,10,10,0,0,0,-10,-10,-10]);
+    // set variable to store shuffled points
+    const shuffled = shufflePoints();
+    setPointOfSquares(shuffled);
     setPlayerGetSquares(Array(9).fill(null));
     setScoreX(0);
     setScoreO(0);
     setXIsNext(true);
   }
 
-//
-const winner = bonusPoint(playerGetSquares);
-const status = winner ? `Winner: ${winner}` : `Next player: ${xIsNext ? 'X' : 'O'}`;
-
+  // UI Contents of Board.jsx
   return (
     <>
       <div className='score-board'>
