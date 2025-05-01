@@ -127,6 +127,10 @@ const Board = () => {
   // UI Contents of Board.jsx
   return (
     <>
+      <div>
+        <h2>{status}</h2>
+      </div>
+
       <div className='score-board'>
         <div className='x-score'>
           <h2>X : {scoreX}</h2>
@@ -135,9 +139,7 @@ const Board = () => {
           <h2>O : {scoreO}</h2>
         </div>
       </div>
-      <div>
-        <h2>{status}</h2>
-      </div>
+
       <div className="board-container">
         {/* onSquareClick (which calls function handleClick) is given to Square as props,
             value of squares[n] is given to Square as props value */}
