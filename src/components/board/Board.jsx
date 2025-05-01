@@ -1,18 +1,18 @@
 import './board.css';
 import Square from '../square/Square'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Board = () => {
   // Initialize variables
 
   // define function to shuffle points on squares
   function shufflePoints(){
-    return [30,30,20,-10,-20,-20,-20,-30,-30].sort(()=> Math.random() - 0.5);
+    return [30,30,10,-10,-10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
   }
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
-  const [playerGetSquares, setPlayerGetSquares] = useState(Array(9).fill(null));
+  const [playerOfSquares, setPlayerOfSquares] = useState(Array(9).fill(null));
   // set variable for default next player (X) (use boolean, no need function)
   const [xIsNext, setXIsNext] = useState(true);
   // set variable to store initial score of the players
@@ -53,24 +53,24 @@ const Board = () => {
   // Define function to handle the game
   function handleClick(n){
     // if nth square is filled, cannot update the square
-    if (playerGetSquares[n] !==null){
+    if (playerOfSquares[n] !==null){
       return;
     }
     // When continue (for empty squares)
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
-    const nextPlayerGetSquares = playerGetSquares.slice();
+    const nextPlayerOfSquares = playerOfSquares.slice();
     // set variable for current player and give it a value X or O
     const currentPlayer = xIsNext ? "X" : "O";
     // update the nth nextPlayerGetSquare(copied one) with current player
-    nextPlayerGetSquares[n] = currentPlayer;
+    nextPlayerOfSquares[n] = currentPlayer;
     // update the newly created array(copied one)
-    setPlayerGetSquares(nextPlayerGetSquares);
+    setPlayerOfSquares(nextPlayerOfSquares);
 
   // Calculate points of X and O
   // set variables for calculation
     const point = pointOfSquares[n];
-    const bonusPlayer = bonusPoint(nextPlayerGetSquares);
-    const bonus = 50;
+    const bonusPlayer = bonusPoint(nextPlayerOfSquares);
+    const bonus = 30;
     if(xIsNext){
       setScoreX(prev => prev + point + (bonusPlayer === 'X' ? bonus : 0));
 
@@ -83,33 +83,34 @@ const Board = () => {
   }
 
 
+  //Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
+  useEffect(()=>{
+    // 第1引数
+    // set variable to store condition of end end (all squares are filled with players)
+    const gameEnd = playerOfSquares.every(player =>player !== null);
 
-
-    // When Game is Over
-    // set variable to store condition of end end (all playerGetSquares are filled)
-    const gameEnd = playerGetSquares.every(player =>player !== null);
-    // set initial value of winner
+    // if continue the game
+    if(!gameEnd){
+      //setStatus with next player
+      setStatus(`Next Player is ${xIsNext ? `X` : `O`}`);
+      return;
+    }
+    // if the game is Over
+    // set initial value of winner (it can be reassign in this function)
     let winner = null;
-    // winner
-    if (gameEnd){
-      if (scoreX > scoreO){
-        winner = "X";
-      } else if (scoreO > scoreX) {
-        winner = "O";
-      } else {
-        winner = "Draw";
-      }
+    if (scoreX > scoreO){
+      winner = "X";
+    } else if (scoreO > scoreX) {
+      winner = "O";
+    } else {
+      winner = "Draw";
     }
+    //setStatus with winner or draw
+    const status = winner ==="Draw" ? "Draw" : `Winner is ${winner}`;
+    setStatus(status);
 
-    // manage the status (game over or game continue)
-    if (gameEnd){
-      const statusEnd = winner==="Draw"? "Draw": `Winner is${winner}`;
-      setStatus(statusEnd);
-    }else{
-      const statusContinue = `NextPlayer is ${xIsNext ? 'X' : 'O'}`;
-      setStatus(statusContinue);
-    }
-
+    //第2引数
+  }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
 
   //define function to reset the game
@@ -117,7 +118,7 @@ const Board = () => {
     // set variable to store shuffled points
     const shuffled = shufflePoints();
     setPointOfSquares(shuffled);
-    setPlayerGetSquares(Array(9).fill(null));
+    setPlayerOfSquares(Array(9).fill(null));
     setScoreX(0);
     setScoreO(0);
     setXIsNext(true);
@@ -141,19 +142,19 @@ const Board = () => {
         {/* onSquareClick (which calls function handleClick) is given to Square as props,
             value of squares[n] is given to Square as props value */}
         <div>
-          <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerGetSquares[0]} />
-          <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerGetSquares[1]} />
-          <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerGetSquares[2]} />
+          <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerOfSquares[0]} />
+          <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerOfSquares[1]} />
+          <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerOfSquares[2]} />
         </div>
         <div>
-          <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerGetSquares[3]} />
-          <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerGetSquares[4]} />
-          <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerGetSquares[5]} />
+          <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerOfSquares[3]} />
+          <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerOfSquares[4]} />
+          <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerOfSquares[5]} />
         </div>
         <div>
-          <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerGetSquares[6]} />
-          <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerGetSquares[7]} />
-          <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerGetSquares[8]} />
+          <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerOfSquares[6]} />
+          <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerOfSquares[7]} />
+          <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerOfSquares[8]} />
         </div>
       </div>
       <div>
