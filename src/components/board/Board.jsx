@@ -7,7 +7,7 @@ const Board = () => {
 
   // define function to shuffle points on squares
   function shufflePoints(){
-    return [10,10,10,0,0,0,-10,-10,-10].sort(()=> Math.random() - 0.5);
+    return [30,30,20,-10,-20,-20,-20,-30,-30].sort(()=> Math.random() - 0.5);
   }
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
@@ -20,6 +20,7 @@ const Board = () => {
   const [scoreO, setScoreO] = useState(0);
   // set variable for status (game continue or end)
   const [status, setStatus] = useState("Next Player is X");
+
 
   // Define function to add bonus point (need argument)
   function bonusPoint(squares){
@@ -48,12 +49,14 @@ const Board = () => {
     return null;
   }
 
+
   // Define function to handle the game
   function handleClick(n){
-    if (playerGetSquares.every((square)=>square!==null)){
+    // if nth square is filled, cannot update the square
+    if (playerGetSquares[n] !==null){
       return;
     }
-    // When continue the game (for empty squares)
+    // When continue (for empty squares)
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerGetSquares = playerGetSquares.slice();
     // set variable for current player and give it a value X or O
@@ -67,13 +70,20 @@ const Board = () => {
   // set variables for calculation
     const point = pointOfSquares[n];
     const bonusPlayer = bonusPoint(nextPlayerGetSquares);
-    const bonus = 10;
+    const bonus = 50;
     if(xIsNext){
       setScoreX(prev => prev + point + (bonusPlayer === 'X' ? bonus : 0));
 
     } else{
       setScoreO(prev => prev + point + (bonusPlayer === 'O' ? bonus : 0));
     }
+
+    // Set next player in turn for the next move
+    setXIsNext(!xIsNext);
+  }
+
+
+
 
     // When Game is Over
     // set variable to store condition of end end (all playerGetSquares are filled)
@@ -100,9 +110,7 @@ const Board = () => {
       setStatus(statusContinue);
     }
 
-    // Set next player in turn for the next move
-    setXIsNext(!xIsNext);
-  }
+
 
   //define function to reset the game
   function resetSquares(){
