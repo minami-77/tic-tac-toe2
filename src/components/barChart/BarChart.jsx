@@ -1,39 +1,59 @@
 import "./barChart.css"
+import { useState, useEffect } from "react";
 
-const BarChart = () => {
+const BarChart = ({scoreX, scoreO}) => {
+  const [xTds, setXTds] = useState(Array(20).fill("normal"));
+  const [oTds, setOTds] = useState(Array(20).fill("normal"));
+
+  useEffect(()=>{
+    const updateXTds = Array(20).fill("normal");
+    const updateOTds = Array(20).fill("normal");
+
+    if (scoreX >= 0){
+      let plusX = scoreX / 10
+      for (let i = 10; i < 10 + plusX; i++) {
+        updateXTds[i] = "active-plus";
+      }
+      // const nextXTds = (Array(10+10-plusX).fill("normal"),Array(plusX).fill("active-plus"));
+    } else {
+      let minusX = scoreX / -10
+      for (let i = 10; i < 10 + minusX; i++) {
+        updateXTds[i] = "active-minus";
+      }
+    }
+
+    if (scoreO >= 0){
+      let plusO = scoreO / 10
+      for (let i = 10; i < 10 + plusO; i++) {
+        updateOTds[i] = "active-plus";
+      }
+    } else {
+      let minusO = scoreO / -10
+      for (let i = 10; i < 10 + minusO; i++) {
+        updateOTds[i] = "active-minus";
+      }
+    }
+    setXTds(updateXTds);
+    setOTds(updateOTds);
+
+  }, [scoreX, scoreO])
+
   return (
     <div>
       <table className="bar-chart-container">
         <tbody>
           {/* table row for playerX */}
           <tr id="x-bar">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td className="active"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            {xTds.map((xTd, index)=>
+              <td key={index} className={xTd}></td>)
+            }
           </tr>
-
 
           {/* table row for playerO */}
           <tr id="o-bar">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td className="active"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          {oTds.map((oTd, index)=>
+              <td key={index} className={oTd}></td>)
+            }
           </tr>
 
         </tbody>
