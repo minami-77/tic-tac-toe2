@@ -10,30 +10,31 @@ const BarChart = ({scoreX, scoreO}) => {
     const updateOTds = Array(20).fill("normal");
 
     if (scoreX >= 0){
-      let plusX = scoreX / 10
-      for (let i = 10; i < 10 + plusX; i++) {
-        updateXTds[i] = "active-plus";
+      if (scoreX!==0){
+        let plusX = Math.floor(scoreX / 10);
+          for (let i = 10; i <= 10 + plusX; i++) {
+          updateXTds[i] = "active-plus";
+        } else {
+          let minusX = Math.floor(scoreX / -10);
+          for (let i = 10; i >= 10 - minusX; i--) {
+            updateXTds[i] = "active-minus";
+          }
+        }
       }
-      // const nextXTds = (Array(10+10-plusX).fill("normal"),Array(plusX).fill("active-plus"));
-    } else {
-      let minusX = scoreX / -10
-      for (let i = 10; i < 10 + minusX; i++) {
-        updateXTds[i] = "active-minus";
-      }
+      setXTds(updateXTds);
     }
 
     if (scoreO >= 0){
-      let plusO = scoreO / 10
-      for (let i = 10; i < 10 + plusO; i++) {
+      let plusO = Math.floor(scoreO / 10);
+      for (let i = 10; i <= 10 + plusO; i++) {
         updateOTds[i] = "active-plus";
       }
     } else {
-      let minusO = scoreO / -10
-      for (let i = 10; i < 10 + minusO; i++) {
+      let minusO = Math.floor(scoreO / -10);
+      for (let i = 10; i >= 10 - minusO; i--) {
         updateOTds[i] = "active-minus";
       }
     }
-    setXTds(updateXTds);
     setOTds(updateOTds);
 
   }, [scoreX, scoreO])
