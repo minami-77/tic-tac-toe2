@@ -5,7 +5,7 @@ const App = () => {
   return (
     <div>
       <div className="container">
-        <h1>Tic-Tac-Toe</h1>
+        <h1 className="title">Tic-Tac-Toe</h1>
         <div className="game-container">
           <Board/>
         </div>

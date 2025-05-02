@@ -1,17 +1,27 @@
 body{
   padding-top: 2rem;
-  /* background-color: rgba(41, 41, 41, 0.966); */
-  background-image: url(./assets/4127298.jpg);
+  background-image: url(./assets/16352003_v935-aum-10-a.jpg);
   background-size: cover;
   background-position: center;
-  color: aliceblue;
-  font-family: cursive;
-  text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.7);
+
   height:100vh;
+}
+.title{
+  color:rgb(79, 231, 200);
+  font-family: cursive;
+  font-size: 4rem;
+  font-weight: bold;
+  text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
 }
 
 .container{
-  margin: 0px auto;
+  margin: auto;
   max-width: 1200px;
   text-align: center;
+}
+
+.game-container{
+  background-color: rgb(232, 185, 209);
+  border-radius: 15px;
+  padding:1rem;
 }
