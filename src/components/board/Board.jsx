@@ -1,6 +1,7 @@
 import './board.css';
 import Square from '../square/Square'
 import { useState, useEffect } from "react";
+import BarChart from '../barChart/BarChart';
 
 const Board = () => {
   // Initialize variables
@@ -136,12 +137,14 @@ const Board = () => {
           <div className='score-board'>
             <div className='x-score'>
               <p>X : {scoreX}</p>
-
             </div>
             <div className='o-score'>
               <p>O : {scoreO}</p>
             </div>
           </div>
+
+          <div><BarChart/></div>
+
           <div>
             {/* when clicked, call resetSquare function */}
             <button className='reset-button' onClick={resetSquares}>Reset</button>
