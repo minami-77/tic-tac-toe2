@@ -1,14 +1,14 @@
 import "./barChart.css"
 import { useState, useEffect } from "react";
 
-const BarChart = ({score}) => {
+const BarChart = ({score, player}) => {
   const [tds, setTds] = useState(Array(20).fill("normal"));
-  // const [oTds, setOTds] = useState(Array(20).fill("normal"));
 
   useEffect(()=>{
+    //第1引数(td = table data)
     let updateTds = Array(20).fill("normal");
-    // const updateOTds = Array(20).fill("normal");
 
+      // get props score from Board
       if (score == 0){
         updateTds= Array(20).fill("normal");
       } else if (score > 0){
@@ -25,42 +25,19 @@ const BarChart = ({score}) => {
         }
       }
       setTds(updateTds);
-
-    // if (scoreO >= 0){
-    //   let plusO = Math.floor(scoreO / 10);
-    //   for (let i = 11; i <= 10 + plusO; i++) {
-    //     console.log(`${i}, 10 + ${plusO}`);
-    //     updateOTds[i] = "active-plus";
-    //   }
-    // } else {
-    //   let minusO = Math.floor(scoreO / -10);
-    //   for (let i = 10; i > 10 - minusO; i--) {
-    //     console.log(`${i}, 10 - ${minusO}`);
-    //     updateOTds[i] = "active-minus";
-    //   }
-    // }
-    // setOTds(updateOTds);
-
+  //第2引数
   }, [score])
 
   return (
     <div>
       <table className="bar-chart-container">
         <tbody>
-          {/* table row for playerX */}
-          <tr id="x-bar">
+          {/* get props player from Board */}
+          <tr className= {player ==='X' ? 'x-bar' :'o-bar'}>
             {tds.map((td, index)=>
-              <td key={index} className={td}></td>
+              <td key={index} className= {td}></td>
             )}
           </tr>
-
-          {/* table row for playerO */}
-          {/* <tr id="o-bar"> */}
-          {/* {oTds.map((oTd, index)=>
-              <td key={index} className={oTd}></td>)
-            }
-          </tr> */}
-
         </tbody>
       </table>
     </div>

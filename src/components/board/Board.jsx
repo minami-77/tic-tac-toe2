@@ -21,6 +21,8 @@ const Board = () => {
   const [scoreO, setScoreO] = useState(0);
   // set variable for status (game continue or end)
   const [status, setStatus] = useState("Next Player is X");
+  //set variable for bonus status
+  const [bonusGiven, setBonusGiven] = useState(null);
 
 
   // Define function to add bonus point (need argument)
@@ -36,13 +38,13 @@ const Board = () => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-
     for ( let i = 0; i < combinations.length; i++ ){
       // set [a,b,c] as places of squares and check if they match the combination
       // Destructuring（分割代入:配列の中身をまとめて変数に取り出す書き方）
       const [a, b, c] = combinations[i];
       // squares[a] is not empty and squares[a]=[b]=[c]='X or 'O'
       if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+        console.log("bonus added!");
         return squares[a];
       }
     }
@@ -53,11 +55,11 @@ const Board = () => {
 
   // Define function to handle the game
   function handleClick(n){
-    // if nth square is filled, cannot update the square
+    // End : if nth square is filled, cannot update the square
     if (playerOfSquares[n] !==null){
       return;
     }
-    // When continue (for empty squares)
+    // Continue :for empty squares
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerOfSquares = playerOfSquares.slice();
     // set variable for current player and give it a value X or O
@@ -72,12 +74,23 @@ const Board = () => {
     const point = pointOfSquares[n];
     const bonusPlayer = bonusPoint(nextPlayerOfSquares);
     const bonus = 30;
-    if(xIsNext){
-      setScoreX(prev => prev + point + (bonusPlayer === 'X' ? bonus : 0));
-      // setBarChartX(prev => prev + point + (bonusPlayer === 'X' ? bonus : 0));
-    } else{
-      setScoreO(prev => prev + point + (bonusPlayer === 'O' ? bonus : 0));
-      // setBarChartO(prev => prev + point + (bonusPlayer === 'O' ? bonus : 0));
+    const bonusMessage = `${bonusPlayer} got ${bonus} bonus point!!`
+
+    // calculation with bonus points
+    if (bonusPlayer === 'X') {
+      setScoreX(prev => prev + point + bonus);
+      setBonusGiven(bonusMessage);
+    } else if (bonusPlayer === 'O') {
+      setScoreO(prev => prev + point + bonus);
+      setBonusGiven(bonusMessage);
+    } else {
+      // normal calculation
+      if (xIsNext) {
+        setScoreX(prev => prev + point);
+      } else {
+        setScoreO(prev => prev + point);
+      }
+      setBonusGiven(null);
     }
 
     // Set next player in turn for the next move
@@ -134,17 +147,17 @@ const Board = () => {
         <div className="info-container">
           <div className='status'>
             <p>{status}</p>
+            <p>{bonusGiven}</p>
           </div>
           <div className='score-board'>
             <div className='x-score'>
-              <p>X {scoreX}</p><BarChart score={scoreX}/>
+              <p>X {scoreX}</p><BarChart score={scoreX} player={'X'}/>
             </div>
 
             <div className='o-score'>
-              <p>O{scoreO}</p><BarChart score={scoreO}/>
+              <p>O {scoreO}</p><BarChart score={scoreO}/>
             </div>
           </div>
-
 
           <div>
             {/* when clicked, call resetSquare function */}
