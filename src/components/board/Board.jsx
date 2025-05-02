@@ -21,9 +21,7 @@ const Board = () => {
   const [scoreO, setScoreO] = useState(0);
   // set variable for status (game continue or end)
   const [status, setStatus] = useState("Next Player is X");
-  // set bar chart
-  // const [barChartX, setBarChartX] = useState(null)
-  // const [barChartO, setBarChartO] = useState(null)
+
 
   // Define function to add bonus point (need argument)
   function bonusPoint(squares){
@@ -113,10 +111,6 @@ const Board = () => {
     const status = winner ==="Draw" ? "Draw" : `Winner is ${winner}`;
     setStatus(status);
 
-    //
-    // setBarChartX(scoreX);
-    // setBarChartO(scoreO);
-
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
@@ -143,14 +137,14 @@ const Board = () => {
           </div>
           <div className='score-board'>
             <div className='x-score'>
-              <p>X : {scoreX}</p>
+              <p>X {scoreX}</p><BarChart score={scoreX}/>
             </div>
+
             <div className='o-score'>
-              <p>O : {scoreO}</p>
+              <p>O{scoreO}</p><BarChart score={scoreO}/>
             </div>
           </div>
 
-          <div><BarChart scoreX={scoreX} scoreO={scoreO} /></div>
 
           <div>
             {/* when clicked, call resetSquare function */}
