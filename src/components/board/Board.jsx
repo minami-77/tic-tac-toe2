@@ -23,6 +23,8 @@ const Board = () => {
   const [status, setStatus] = useState("Next Player is X");
   //set variable for bonus status
   const [bonusGiven, setBonusGiven] = useState(null);
+  //set variable for bonus message
+  const [message, setMessage] = useState(null);
 
 
   // Define function to add bonus point (need argument)
@@ -68,7 +70,6 @@ const Board = () => {
     nextPlayerOfSquares[n] = currentPlayer;
     // update the newly created array(copied one)
     setPlayerOfSquares(nextPlayerOfSquares);
-
   // Calculate points of X and O
   // set variables for calculation
     const point = pointOfSquares[n];
@@ -92,10 +93,21 @@ const Board = () => {
       }
       setBonusGiven(null);
     }
-
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
   }
+
+
+
+
+  // Display Bonus message
+  useEffect(()=>{
+    setMessage(bonusGiven ? 'show' : '');
+    console.log("tic-tac-toe");
+  },[bonusGiven])
+
+
+
 
   // Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
   useEffect(()=>{
@@ -149,7 +161,6 @@ const Board = () => {
           </div>
 
           <div className='score-board'>
-
               <div className='x-score'>
                 <p>X {scoreX}</p><BarChart score={scoreX} player={'X'}/>
               </div>
@@ -158,11 +169,21 @@ const Board = () => {
                 <p>O {scoreO}</p><BarChart score={scoreO}/>
               </div>
 
-              <div className ={`bonus-message ${bonusGiven ? 'show' : '' }`} >
+{/* ここに書く必要が？？？他の場所でもいい？ */}
+              <div className ={`bonus-message ${message}`} >
                 <p>Tic-Tac-Toe!</p>
                 <p>{bonusGiven}</p>
               </div>
-
+{/*
+<div className="result">
+  <p>{status}</p>
+  <div className="result-details">
+    <p>Score</p>
+    <p>X {scoreX}</p><p>Bonus</p>
+    <p>O {scoreO}</p><p>Bonus</p>
+  </div>
+</div>
+*/}
           </div>
 
           <div>
