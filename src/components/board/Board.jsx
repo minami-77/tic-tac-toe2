@@ -97,13 +97,6 @@ const Board = () => {
     setXIsNext(!xIsNext);
   }
 
-  // Display bonus point UI
-  useEffect(()=>{
-    const bonusMessage = document.getElementById("bonus-message");
-    bonusMessage.classList.remove("d-none");
-  }, [bonusGiven])
-
-
   // Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
   useEffect(()=>{
     // 第1引数
@@ -153,7 +146,6 @@ const Board = () => {
         <div className="info-container">
           <div className='status'>
             <p>{status}</p>
-            <p>{bonusGiven}</p>
           </div>
 
           <div className='score-board'>
@@ -166,10 +158,9 @@ const Board = () => {
                 <p>O {scoreO}</p><BarChart score={scoreO}/>
               </div>
 
-              <div id="bonus-message" className="bonus-display d-none">
-                <p>Tic-Tac-Toe!
-                  {bonusGiven}
-                </p>
+              <div className ={`bonus-message ${bonusGiven ? 'show' : '' }`} >
+                <p>Tic-Tac-Toe!</p>
+                <p>{bonusGiven}</p>
               </div>
 
           </div>
