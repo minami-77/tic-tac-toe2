@@ -97,8 +97,14 @@ const Board = () => {
     setXIsNext(!xIsNext);
   }
 
+  // Display bonus point UI
+  useEffect(()=>{
+    const bonusMessage = document.getElementById("bonus-message");
+    bonusMessage.classList.remove("d-none");
+  }, [bonusGiven])
 
-  //Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
+
+  // Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
   useEffect(()=>{
     // 第1引数
     // set variable to store condition of end end (all squares are filled with players)
@@ -149,14 +155,23 @@ const Board = () => {
             <p>{status}</p>
             <p>{bonusGiven}</p>
           </div>
-          <div className='score-board'>
-            <div className='x-score'>
-              <p>X {scoreX}</p><BarChart score={scoreX} player={'X'}/>
-            </div>
 
-            <div className='o-score'>
-              <p>O {scoreO}</p><BarChart score={scoreO}/>
-            </div>
+          <div className='score-board'>
+
+              <div className='x-score'>
+                <p>X {scoreX}</p><BarChart score={scoreX} player={'X'}/>
+              </div>
+
+              <div className='o-score'>
+                <p>O {scoreO}</p><BarChart score={scoreO}/>
+              </div>
+
+              <div id="bonus-message" className="bonus-display d-none">
+                <p>Tic-Tac-Toe!
+                  {bonusGiven}
+                </p>
+              </div>
+
           </div>
 
           <div>
