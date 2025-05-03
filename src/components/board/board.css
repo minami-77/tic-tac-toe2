@@ -18,6 +18,36 @@ p{
   color: rgb(70, 70, 70);
 }
 
+.status.hide{
+  display: none;
+}
+
+.result{
+  /* Child */
+  position:absolute;
+  /* absolute position to parent (child's top-left point comes center)*/
+  top: 50%;
+  left: 50%;
+  /* translate position to center (x,y axis)*/
+  transform: translate(-50%,-50%);
+
+  background-color: rgba(243, 231, 104, 0.85);
+  color: rgb(70, 70, 70);
+  font-size: 3.5rem;
+  text-shadow: 0 0 5px white;
+  padding: 3rem;
+  border: 2px solid white;
+  border-radius: 50px;
+  box-shadow: 0px 0px 5px white;
+
+  display: none;
+}
+
+.result.show{
+  display:block;
+}
+
+
 .score-board{
   gap: 2rem;
   margin:1rem;
@@ -61,17 +91,26 @@ p{
   display: none;
 }
 
-.bonus-message .show{
+.bonus-message.show{
   display: block;
-  /* animation: bonus-fadeout 2s forwards; */
+  animation: bonus-fadeout 3s forwards;
 }
-/*
+
 @keyframes bonus-fadeout {
-  0% { opacity: 1;}
-  50% { opacity: 1; scale:1.5;}
-  90% { opacity: 1; scale:1.5;}
-  100% { opacity: 0; display: none;}
-} */
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    display: none;
+  }
+}
 
 .reset-button{
   color: rgb(70, 70, 70);

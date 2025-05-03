@@ -21,11 +21,12 @@ const Board = () => {
   const [scoreO, setScoreO] = useState(0);
   // set variable for status (game continue or end)
   const [status, setStatus] = useState("Next Player is X");
-  //set variable for bonus status
+  // set variable for bonus status
   const [bonusGiven, setBonusGiven] = useState(null);
-  //set variable for bonus message
-  const [message, setMessage] = useState(null);
-
+  // set variable for message to hide or show (bonus,result)
+  const [message, setMessage] = useState('');
+  // set variable for result message
+  const [result, setResult] = useState('');
 
   // Define function to add bonus point (need argument)
   function bonusPoint(squares){
@@ -81,9 +82,11 @@ const Board = () => {
     if (bonusPlayer === 'X') {
       setScoreX(prev => prev + point + bonus);
       setBonusGiven(bonusMessage);
+      setMessage('show');
     } else if (bonusPlayer === 'O') {
       setScoreO(prev => prev + point + bonus);
       setBonusGiven(bonusMessage);
+      setMessage('show');
     } else {
       // normal calculation
       if (xIsNext) {
@@ -102,12 +105,11 @@ const Board = () => {
 
   // Display Bonus message
   useEffect(()=>{
-    setMessage(bonusGiven ? 'show' : '');
-    console.log("tic-tac-toe");
+    if(bonusGiven){
+      setMessage('show');
+      console.log("tic-tac-toe", bonusGiven);
+    }
   },[bonusGiven])
-
-
-
 
   // Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
   useEffect(()=>{
@@ -134,10 +136,15 @@ const Board = () => {
     //setStatus with winner or draw
     const status = winner ==="Draw" ? "Draw" : `Winner is ${winner}`;
     setStatus(status);
+    setMessage('hide');
+    setResult('show');
 
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
+  useEffect(()=>{
+
+  },[])
 
   //define function to reset the game
   function resetSquares(){
@@ -148,6 +155,8 @@ const Board = () => {
     setScoreX(0);
     setScoreO(0);
     setXIsNext(true);
+    setMessage('');
+    setResult('');
   }
 
   // UI Contents of Board.jsx
@@ -156,8 +165,9 @@ const Board = () => {
       <div className="info-board">
 
         <div className="info-container">
-          <div className='status'>
+          <div className={`status ${message}`}>
             <p>{status}</p>
+            {console.log(message, status)}
           </div>
 
           <div className='score-board'>
@@ -173,18 +183,23 @@ const Board = () => {
               <div className ={`bonus-message ${message}`} >
                 <p>Tic-Tac-Toe!</p>
                 <p>{bonusGiven}</p>
+              {console.log(message, bonusGiven)}
               </div>
-{/*
-<div className="result">
-  <p>{status}</p>
-  <div className="result-details">
-    <p>Score</p>
-    <p>X {scoreX}</p><p>Bonus</p>
-    <p>O {scoreO}</p><p>Bonus</p>
-  </div>
-</div>
-*/}
+
+{/* ここでいいの？ */}
+              <div className={`result ${result}`}>
+                <p>{status}</p>
+                <div className="result-details">
+                  <p>Score</p>
+                  <p><span>X : {scoreX}</span> <span>O: {scoreO}</span></p>
+                  <div>
+                    {/* when clicked, call resetSquare function */}
+                    <button className='reset-button' onClick={resetSquares}>Try Again</button>
+                  </div>
+                </div>
+              </div>
           </div>
+
 
           <div>
             {/* when clicked, call resetSquare function */}
