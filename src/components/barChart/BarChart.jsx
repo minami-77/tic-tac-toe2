@@ -35,7 +35,7 @@ const BarChart = ({score, player}) => {
           {/* get props player from Board */}
           <tr className= {player ==='X' ? 'x-bar' :'o-bar'}>
             {tds.map((td, index)=>
-              <td key={index} className= {td}></td>
+              <td key={index} className={player ==='X' ? `x-bar ${td}` :`o-bar ${td}`} ></td>
             )}
           </tr>
         </tbody>

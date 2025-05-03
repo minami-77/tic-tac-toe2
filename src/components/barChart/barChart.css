@@ -2,31 +2,28 @@
   padding: 0.5rem;
 }
 
-.x-bar .normal, .o-bar .normal{
+.x-bar, .o-bar{
   width: 10px;
   height:30px;
-  background-color: rgb(235, 235, 235);
   border: 0.2rem solid transparent;
   border-radius: 3px;
-  /* box-shadow: 0px 0px 5px white; */
+}
+.normal {
+  background-color: rgb(235, 235, 235);
 
 }
 
 .x-bar .active-plus {
   background-color: aquamarine;
-  /* border-color: white; */
 }
 .x-bar .active-minus {
   background-color: rgb(98, 125, 116);
-  /* border-color: white; */
 }
 
 .o-bar .active-plus {
   background-color: rgb(254, 90, 178);
-  /* border-color: white; */
 }
 
 .o-bar .active-minus {
   background-color: rgb(137, 106, 122);
-  /* border-color: white; */
 }

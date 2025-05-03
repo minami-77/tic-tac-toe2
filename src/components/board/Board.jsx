@@ -172,11 +172,11 @@ const Board = () => {
 
           <div className='score-board'>
               <div className='x-score'>
-                <p>X {scoreX}</p><BarChart score={scoreX} player={'X'}/>
+                <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
               </div>
 
               <div className='o-score'>
-                <p>O {scoreO}</p><BarChart score={scoreO}/>
+                <p>O : {scoreO} Points</p><BarChart score={scoreO}/>
               </div>
 
 {/* ここに書く必要が？？？他の場所でもいい？ */}
