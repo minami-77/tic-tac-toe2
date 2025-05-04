@@ -13,13 +13,13 @@ const BarChart = ({score, player}) => {
         updateTds= Array(20).fill("normal");
       } else if (score > 0){
         let plus = Math.floor(score / 10);
-        for (let i = 11; i <= 10 + plus; i++) {
+        for (let i = 10; i <= 9 + plus; i++) {
           console.log(`${i}, 10 + ${plus}`);
           updateTds[i] = "active-plus";
         }
       } else {
         let minus = Math.floor(score / -10);
-        for (let i = 10; i > 10 - minus; i--) {
+        for (let i = 9; i > 9 - minus; i--) {
           console.log(`${i}, 10 - ${minus}`);
           updateTds[i] = "active-minus";
         }

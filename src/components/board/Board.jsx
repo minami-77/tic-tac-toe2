@@ -134,7 +134,7 @@ const Board = () => {
       winner = "Draw";
     }
     //setStatus with winner or draw
-    const status = winner ==="Draw" ? "Draw" : `Winner is ${winner}`;
+    const status = winner ==="Draw" ? "Draw" : `${winner} won !`;
     setStatus(status);
     setMessage('hide');
     setResult('show');
@@ -190,8 +190,8 @@ const Board = () => {
               <div className={`result ${result}`}>
                 <p>{status}</p>
                 <div className="result-details">
-                  <p>Score</p>
-                  <p><span>X : {scoreX}</span> <span>O: {scoreO}</span></p>
+                  <p className="details-x"> X : {scoreX} points</p>
+                  <p className="details-o">O : {scoreO} points</p>
                   <div>
                     {/* when clicked, call resetSquare function */}
                     <button className='reset-button' onClick={resetSquares}>Try Again</button>
