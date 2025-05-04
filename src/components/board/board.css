@@ -33,8 +33,12 @@ p{
 }
 
 .row{
-  white-space: nowrap;   /* 改行させない */
-  flex-shrink: 1 !important;
+  /* 改行させない */
+  white-space: nowrap;
+  /* 子要素のflex-shrinkのために設定が必要 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .reset-button{

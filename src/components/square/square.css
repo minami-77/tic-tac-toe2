@@ -1,5 +1,9 @@
 .square-button{
+  /* レスポンシブ対応のため。親要素のflex設定とセット。 */
+  flex-shrink: 1;
+  min-width: 4rem; /* 最小サイズの保険 */
   width: 6rem;
+
   height: 6rem;
   font-size: 2rem;
   font-family: cursive;
