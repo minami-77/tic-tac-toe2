@@ -1,3 +1,23 @@
+@media (max-width: 960px) {
+  /* For a screen < 960px, this CSS will be read (lg)*/
+  .container {
+    width: 700px;
+  }
+}
+@media (max-width: 720px) {
+  /* For a screen < 720px, this CSS will be read (md)*/
+  .container {
+    width: 500px;
+  }
+}
+@media (max-width: 540px) {
+  /* For a screen < 540px, this CSS will be read (sm)*/
+  .container {
+    width: 300px;
+  }
+}
+
+
 body{
   padding-top: 2rem;
   background-image: url(./assets/16352003_v935-aum-10-a.jpg);
@@ -16,7 +36,7 @@ body{
 
 .container{
   margin: auto;
-  max-width: 1200px;
+  max-width: 1000px;
   text-align: center;
 }
 

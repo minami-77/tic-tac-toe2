@@ -12,6 +12,7 @@
   border-radius: 10px;
   box-shadow: 0px 0px 5px white;
   transition:all 0.2s;
+
   /* ボタン同士のズレ防止  */
   /* 行全体(ボタン）の高さ指定 */
   line-height: 5rem;
@@ -28,7 +29,6 @@
 .square-button.x-green{
   background-color:aquamarine;
 }
-
 
 .square-button.o-pink{
   background-color:rgb(254, 90, 178);

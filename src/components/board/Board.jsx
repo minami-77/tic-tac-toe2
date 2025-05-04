@@ -100,9 +100,6 @@ const Board = () => {
     setXIsNext(!xIsNext);
   }
 
-
-
-
   // Display Bonus message
   useEffect(()=>{
     if(bonusGiven){
@@ -138,13 +135,8 @@ const Board = () => {
     setStatus(status);
     setMessage('hide');
     setResult('show');
-
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
-
-  useEffect(()=>{
-
-  },[])
 
   //define function to reset the game
   function resetSquares(){
@@ -162,19 +154,38 @@ const Board = () => {
   // UI Contents of Board.jsx
   return (
     <>
-      <div className="info-board">
+      <div className="board-info">
+
+        <div className="board-container">
+          {/* onSquareClick (which calls function handleClick) is given to Square as props,
+              value of squares[n] is given to Square as props value */}
+          <div className="row">
+            <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerOfSquares[0]} />
+            <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerOfSquares[1]} />
+            <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerOfSquares[2]} />
+          </div>
+          <div className="row">
+            <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerOfSquares[3]} />
+            <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerOfSquares[4]} />
+            <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerOfSquares[5]} />
+          </div>
+          <div className="row">
+            <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerOfSquares[6]} />
+            <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerOfSquares[7]} />
+            <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerOfSquares[8]} />
+          </div>
+        </div>
+
 
         <div className="info-container">
           <div className={`status ${message}`}>
             <p>{status}</p>
-            {console.log(message, status)}
+            {console.log(status)}
           </div>
-
           <div className='score-board'>
               <div className='x-score'>
                 <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
               </div>
-
               <div className='o-score'>
                 <p>O : {scoreO} Points</p><BarChart score={scoreO}/>
               </div>
@@ -183,7 +194,7 @@ const Board = () => {
               <div className ={`bonus-message ${message}`} >
                 <p>Tic-Tac-Toe!</p>
                 <p>{bonusGiven}</p>
-              {console.log(message, bonusGiven)}
+                {console.log(bonusGiven)}
               </div>
 
 {/* ここでいいの？ */}
@@ -204,26 +215,6 @@ const Board = () => {
           <div>
             {/* when clicked, call resetSquare function */}
             <button className='reset-button' onClick={resetSquares}>Reset</button>
-          </div>
-        </div>
-
-        <div className="board-container">
-          {/* onSquareClick (which calls function handleClick) is given to Square as props,
-              value of squares[n] is given to Square as props value */}
-          <div>
-            <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerOfSquares[0]} />
-            <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerOfSquares[1]} />
-            <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerOfSquares[2]} />
-          </div>
-          <div>
-            <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerOfSquares[3]} />
-            <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerOfSquares[4]} />
-            <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerOfSquares[5]} />
-          </div>
-          <div>
-            <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerOfSquares[6]} />
-            <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerOfSquares[7]} />
-            <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerOfSquares[8]} />
           </div>
         </div>
 
