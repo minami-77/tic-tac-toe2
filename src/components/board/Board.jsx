@@ -27,6 +27,9 @@ const Board = () => {
   const [message, setMessage] = useState('');
   // set variable for result message
   const [result, setResult] = useState('');
+  //set variable for bonus has given before or not
+  const [bonusHasGivenTo, setBonusHasGivenTo] = useState(null);
+
 
   // Define function to add bonus point (need argument)
   function bonusPoint(squares){
@@ -78,18 +81,19 @@ const Board = () => {
     const bonus = 30;
     const bonusMessage = `${bonusPlayer} got ${bonus} bonus point!!`
 
+    if (bonusPlayer !== null && bonusHasGivenTo !== bonusPlayer){
     // calculation with bonus points
-    if (bonusPlayer === 'X') {
-      setScoreX(prev => prev + point + bonus);
+      if (bonusPlayer === 'X') {
+        setScoreX(prev => prev + point + bonus);
+      } else if (bonusPlayer === 'O') {
+        setScoreO(prev => prev + point + bonus);
+      }
       setBonusGiven(bonusMessage);
       setMessage('show');
-    } else if (bonusPlayer === 'O') {
-      setScoreO(prev => prev + point + bonus);
-      setBonusGiven(bonusMessage);
-      setMessage('show');
+      setBonusHasGivenTo(bonusPlayer);
+    // normal calculation
     } else {
-      // normal calculation
-      if (xIsNext) {
+      if (currentPlayer === 'X') {
         setScoreX(prev => prev + point);
       } else {
         setScoreO(prev => prev + point);
@@ -98,13 +102,14 @@ const Board = () => {
     }
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
+    console.log(`point:${point},scoreX:${scoreX},,scoreO:${scoreO}`);
   }
 
   // Display Bonus message
   useEffect(()=>{
     if(bonusGiven){
       setMessage('show');
-      console.log("tic-tac-toe", bonusGiven);
+      // console.log("tic-tac-toe", bonusGiven);
     }
   },[bonusGiven])
 
@@ -180,21 +185,21 @@ const Board = () => {
         <div className="info-container">
           <div className={`status ${message}`}>
             <p>{status}</p>
-            {console.log(status)}
           </div>
           <div className='score-board'>
               <div className='x-score'>
                 <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
               </div>
               <div className='o-score'>
-                <p>O : {scoreO} Points</p><BarChart score={scoreO}/>
+                <p>O : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
               </div>
+              {console.log(scoreX,scoreO)}
 
 {/* ここに書く必要が？？？他の場所でもいい？ */}
               <div className ={`bonus-message ${message}`} >
                 <p>Tic-Tac-Toe!</p>
                 <p>{bonusGiven}</p>
-                {console.log(bonusGiven)}
+                {/* {console.log(bonusGiven)} */}
               </div>
 
 {/* ここでいいの？ */}

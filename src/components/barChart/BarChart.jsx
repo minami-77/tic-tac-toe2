@@ -7,6 +7,7 @@ const BarChart = ({score, player}) => {
   useEffect(()=>{
     //第1引数(td = table data)
     let updateTds = Array(20).fill("normal");
+    console.log(`props score:${score}, player${player}`)
 
       // get props score from Board
       if (score == 0){
