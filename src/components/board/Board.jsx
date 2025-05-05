@@ -79,30 +79,29 @@ const Board = () => {
     const point = pointOfSquares[n];
     const bonusPlayer = bonusPoint(nextPlayerOfSquares);
     const bonus = 30;
-    const bonusMessage = `${bonusPlayer} got ${bonus} bonus point!!`
+    let totalPoint = point;
+
 
     if (bonusPlayer !== null && bonusHasGivenTo !== bonusPlayer){
     // calculation with bonus points
-      if (bonusPlayer === 'X') {
-        setScoreX(prev => prev + point + bonus);
-      } else if (bonusPlayer === 'O') {
-        setScoreO(prev => prev + point + bonus);
+      if (bonusPlayer === currentPlayer) {
+        totalPoint += bonus;
+        setMessage('show');
+        setBonusHasGivenTo(bonusPlayer);
+        setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
+      } else {
+        setBonusGiven(null);
       }
-      setBonusGiven(bonusMessage);
-      setMessage('show');
-      setBonusHasGivenTo(bonusPlayer);
     // normal calculation
     } else {
       if (currentPlayer === 'X') {
-        setScoreX(prev => prev + point);
+        setScoreX(prev => prev + totalPoint);
       } else {
-        setScoreO(prev => prev + point);
+        setScoreO(prev => prev + totalPoint);
       }
-      setBonusGiven(null);
     }
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
-    console.log(`point:${point},scoreX:${scoreX},,scoreO:${scoreO}`);
   }
 
   // Display Bonus message
