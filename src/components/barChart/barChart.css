@@ -18,7 +18,7 @@
   background-color: aquamarine;
 }
 .x-bar .active-minus {
-  background-color: rgb(98, 125, 116);
+  background-color: rgb(70, 70, 70);
 }
 
 .o-bar .active-plus {
@@ -26,5 +26,5 @@
 }
 
 .o-bar .active-minus {
-  background-color: rgb(137, 106, 122);
+  background-color: rgb(70, 70, 70);
 }

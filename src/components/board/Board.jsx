@@ -1,6 +1,6 @@
 import './board.css';
 import Square from '../square/Square'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BarChart from '../barChart/BarChart';
 
 const Board = () => {
@@ -8,7 +8,7 @@ const Board = () => {
 
   // define function to shuffle points on squares
   function shufflePoints(){
-    return [30,30,10,-10,-10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
+    return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
   }
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
@@ -28,7 +28,7 @@ const Board = () => {
   // set variable for result message
   const [result, setResult] = useState('');
   //set variable for bonus has given before or not
-  const [bonusHasGivenTo, setBonusHasGivenTo] = useState(null);
+  const bonusHasGivenTo = useRef({ X: false, O: false });
 
 
   // Define function to add bonus point (need argument)
@@ -58,13 +58,13 @@ const Board = () => {
     return null;
   }
 
-
   // Define function to handle the game
   function handleClick(n){
     // End : if nth square is filled, cannot update the square
     if (playerOfSquares[n] !==null){
       return;
     }
+
     // Continue :for empty squares
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerOfSquares = playerOfSquares.slice();
@@ -74,47 +74,56 @@ const Board = () => {
     nextPlayerOfSquares[n] = currentPlayer;
     // update the newly created array(copied one)
     setPlayerOfSquares(nextPlayerOfSquares);
-  // Calculate points of X and O
-  // set variables for calculation
-    const point = pointOfSquares[n];
+    //if matched bonus combination, set variable for bonus player
     const bonusPlayer = bonusPoint(nextPlayerOfSquares);
+
+  // Calculate points of X and O
+    // set variable to store points
+    const point = pointOfSquares[n];
     const bonus = 30;
     let totalPoint = point;
+    // set LOCAL variable to check the player get bonus now (setState cannot be reflected immediately)
+    const isBonusNow = bonusPlayer !== null && bonusPlayer === currentPlayer && !bonusHasGivenTo[currentPlayer]
 
-
-    if (bonusPlayer !== null && bonusHasGivenTo !== bonusPlayer){
-    // calculation with bonus points
-      if (bonusPlayer === currentPlayer) {
-        totalPoint += bonus;
-        setMessage('show');
-        setBonusHasGivenTo(bonusPlayer);
-        setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
-      } else {
-        setBonusGiven(null);
-      }
-    // normal calculation
+    // if bonus, set useState for display message
+    if (isBonusNow){
+      totalPoint += bonus;
+      setMessage('show');
+      setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
+      // useRef
+      bonusHasGivenTo.current[currentPlayer] = true;
     } else {
-      if (currentPlayer === 'X') {
-        setScoreX(prev => prev + totalPoint);
-      } else {
-        setScoreO(prev => prev + totalPoint);
-      }
+      setBonusGiven(null);
+      setMessage('');
     }
+
+    // calculation with /without bonus
+    if (currentPlayer === 'X') {
+      setScoreX(prev => prev + totalPoint);
+    } else {
+      setScoreO(prev => prev + totalPoint);
+    }
+
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
+
   }
 
   // Display Bonus message
-  useEffect(()=>{
-    if(bonusGiven){
-      setMessage('show');
-      // console.log("tic-tac-toe", bonusGiven);
+  useEffect(() => {
+    if (bonusGiven) {
+      setMessage('show'); // className="show" にするとフェードイン
+      const timer = setTimeout(() => {
+        setMessage(''); // クラスを消す＝display:noneに切り替わるようCSSを設計
+        setBonusGiven(null);
+      }, 1500);
+      return () => clearTimeout(timer);
     }
-  },[bonusGiven])
+  }, [bonusGiven]);
 
-  // Update status with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
+  // Update game status
+  // with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
   useEffect(()=>{
-    // 第1引数
     // set variable to store condition of end end (all squares are filled with players)
     const gameEnd = playerOfSquares.every(player =>player !== null);
 
@@ -142,7 +151,7 @@ const Board = () => {
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
-  //define function to reset the game
+  //Reset the game
   function resetSquares(){
     // set variable to store shuffled points
     const shuffled = shufflePoints();
@@ -153,6 +162,7 @@ const Board = () => {
     setXIsNext(true);
     setMessage('');
     setResult('');
+    bonusHasGivenTo.current = { X: false, O: false };
   }
 
   // UI Contents of Board.jsx
