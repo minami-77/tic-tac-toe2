@@ -23,10 +23,10 @@ const Board = () => {
   const [status, setStatus] = useState("Next Player is X");
   // set variable for bonus status
   const [bonusGiven, setBonusGiven] = useState(null);
-  // set variable for message to hide or show (bonus,result)
-  const [message, setMessage] = useState('');
-  // set variable for result message
-  const [result, setResult] = useState('');
+  // set variable for message to hide or show (bonus)
+  const [bonusPopup, setBonusPopup] = useState(false);
+    // set variable for message to hide or show (result)
+  const [result, setResult] = useState(false);
   //set variable for bonus has given before or not
   const bonusHasGivenTo = useRef({ X: false, O: false });
 
@@ -50,7 +50,7 @@ const Board = () => {
       const [a, b, c] = combinations[i];
       // squares[a] is not empty and squares[a]=[b]=[c]='X or 'O'
       if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-        console.log("bonus added!");
+        console.log(`Bonus combination!->${squares[a]}`);
         return squares[a];
       }
     }
@@ -87,14 +87,15 @@ const Board = () => {
 
     // if bonus, set useState for display message
     if (isBonusNow){
+      console.log(">>> BONUS処理実行!! currentPlayer:", currentPlayer);
       totalPoint += bonus;
-      setMessage('show');
+      setBonusPopup(true);
       setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
       // useRef
       bonusHasGivenTo.current[currentPlayer] = true;
     } else {
+      setBonusPopup(false);
       setBonusGiven(null);
-      setMessage('');
     }
 
     // calculation with /without bonus
@@ -104,22 +105,12 @@ const Board = () => {
       setScoreO(prev => prev + totalPoint);
     }
 
+    console.log(`currentPlayer:${currentPlayer},bonusPopup:${bonusPopup}, bonusGiven:${bonusGiven}, bonusHasGivenTo:${bonusHasGivenTo}`);
+    console.log("bonusPlayer from bonusPoint():", bonusPlayer);
+    console.log("bonusHasGivenTo.current:", bonusHasGivenTo.current);
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
-
   }
-
-  // Display Bonus message
-  useEffect(() => {
-    if (bonusGiven) {
-      setMessage('show'); // className="show" にするとフェードイン
-      const timer = setTimeout(() => {
-        setMessage(''); // クラスを消す＝display:noneに切り替わるようCSSを設計
-        setBonusGiven(null);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [bonusGiven]);
 
   // Update game status
   // with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
@@ -144,10 +135,10 @@ const Board = () => {
       winner = "Draw";
     }
     //setStatus with winner or draw
-    const status = winner ==="Draw" ? "Draw" : `${winner} won !`;
+    const status = winner ==="Draw" ? "Draw" : `Player ${winner} won! `;
     setStatus(status);
-    setMessage('hide');
-    setResult('show');
+    // setMessage('hide');
+    setResult(true);
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
@@ -160,8 +151,8 @@ const Board = () => {
     setScoreX(0);
     setScoreO(0);
     setXIsNext(true);
-    setMessage('');
-    setResult('');
+    setBonusPopup(false);
+    setResult(false);
     bonusHasGivenTo.current = { X: false, O: false };
   }
 
@@ -190,48 +181,46 @@ const Board = () => {
           </div>
         </div>
 
-
         <div className="info-container">
-          <div className={`status ${message}`}>
+          <div className="status">
             <p>{status}</p>
           </div>
+
           <div className='score-board'>
-              <div className='x-score'>
-                <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
-              </div>
-              <div className='o-score'>
-                <p>O : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
-              </div>
-              {console.log(scoreX,scoreO)}
+            <div className='x-score'>
+              <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
+            </div>
+            <div className='o-score'>
+              <p>O : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
+            </div>
 
-{/* ここに書く必要が？？？他の場所でもいい？ */}
-              <div className ={`bonus-message ${message}`} >
-                <p>Tic-Tac-Toe!</p>
-                <p>{bonusGiven}</p>
-                {/* {console.log(bonusGiven)} */}
-              </div>
+            {/* Bonus Popup message */}
+            <div className ={`bonus-message ${bonusPopup? 'show':''}`} >
+              <p>Tic-Tac-Toe!</p>
+              <p>{bonusGiven}</p>
+            </div>
 
-{/* ここでいいの？ */}
-              <div className={`result ${result}`}>
-                <p>{status}</p>
-                <div className="result-details">
-                  <p className="details-x"> X : {scoreX} points</p>
-                  <p className="details-o">O : {scoreO} points</p>
-                  <div>
-                    {/* when clicked, call resetSquare function */}
-                    <button className='reset-button' onClick={resetSquares}>Try Again</button>
-                  </div>
+            {/* Result Popup message */}
+            <div className={`result ${result? 'show': ''}`}>
+              <p>{status}</p>
+              <div className="result-details">
+                <p className="details-x"> X : {scoreX} points</p>
+                <p className="details-o">O : {scoreO} points</p>
+                <div>
+                  {/* when clicked, call resetSquare function */}
+                  <button className='reset-button' onClick={resetSquares}>Try Again</button>
                 </div>
               </div>
-          </div>
+            </div>
 
+          </div>
 
           <div>
             {/* when clicked, call resetSquare function */}
             <button className='reset-button' onClick={resetSquares}>Reset</button>
           </div>
-        </div>
 
+        </div>
       </div>
     </>
   )

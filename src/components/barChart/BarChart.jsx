@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const BarChart = ({score, player}) => {
   const [tds, setTds] = useState(Array(20).fill("normal"));
-  console.log(`props score:${score}, player${player}`)
+  // console.log(`props score:${score}, player${player}`)
 
   useEffect(()=>{
     //第1引数(td = table data)
@@ -15,13 +15,13 @@ const BarChart = ({score, player}) => {
       } else if (score > 0){
         let plus = Math.floor(score / 10);
         for (let i = 10; i <= 9 + plus; i++) {
-          console.log(`${i}, 10 + ${plus}`);
+          // console.log(`${i}, 10 + ${plus}`);
           updateTds[i] = "active-plus";
         }
       } else {
         let minus = Math.floor(score / -10);
         for (let i = 9; i > 9 - minus; i--) {
-          console.log(`${i}, 10 - ${minus}`);
+          // console.log(`${i}, 10 - ${minus}`);
           updateTds[i] = "active-minus";
         }
       }
