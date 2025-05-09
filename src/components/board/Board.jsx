@@ -10,6 +10,7 @@ const Board = () => {
   function shufflePoints(){
     return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
   }
+
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
@@ -65,7 +66,8 @@ const Board = () => {
       return;
     }
 
-    // Continue :for empty squares
+    console.log("CLICKED: handleClick is called!")
+    // Continue :
     // copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerOfSquares = playerOfSquares.slice();
     // set variable for current player and give it a value X or O
@@ -74,43 +76,51 @@ const Board = () => {
     nextPlayerOfSquares[n] = currentPlayer;
     // update the newly created array(copied one)
     setPlayerOfSquares(nextPlayerOfSquares);
-    //if matched bonus combination, set variable for bonus player
-    const bonusPlayer = bonusPoint(nextPlayerOfSquares);
+    // Set next player in turn for the next move
+    setXIsNext(!xIsNext);
+    // Call calculation function
+    calculatePointsAndBonus(nextPlayerOfSquares, currentPlayer, n);
 
-  // Calculate points of X and O
-    // set variable to store points
-    const point = pointOfSquares[n];
-    const bonus = 30;
-    let totalPoint = point;
-    // set LOCAL variable to check the player get bonus now (setState cannot be reflected immediately)
-    const isBonusNow = bonusPlayer !== null && bonusPlayer === currentPlayer && !bonusHasGivenTo[currentPlayer]
+    console.log("[handleClick] clicked index:", n);
+    console.log("[handleClick] currentPlayer:", currentPlayer);
+    console.log("[handleClick] nextPlayerOfSquares:", nextPlayerOfSquares);
+  }
 
-    // if bonus, set useState for display message
-    if (isBonusNow){
-      console.log(">>> BONUS処理実行!! currentPlayer:", currentPlayer);
-      totalPoint += bonus;
+  function calculatePointsAndBonus(squares,  currentPlayer, index){
+    console.log("[calculatePointsAndBonus] squares:", squares, "playerOfSquares:", playerOfSquares);
+
+    // const currentPlayer = squares[lastIndex];
+    const basePoint = pointOfSquares[index] || 0;
+    const bonusPlayer = bonusPoint(squares);
+    const isBonus = bonusPlayer === currentPlayer && !bonusHasGivenTo.current[currentPlayer];
+    const bonus = isBonus ? 30 : 0;
+    const totalPoint = basePoint + bonus;
+
+    console.log(`[calculatePointsAndBonus] currentPlayer: ${currentPlayer}`);
+    console.log(`[calculatePointsAndBonus] basePoint: ${basePoint}, bonus: ${bonus}, total: ${totalPoint}`);
+
+    if (isBonus) {
       setBonusPopup(true);
       setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
-      // useRef
       bonusHasGivenTo.current[currentPlayer] = true;
     } else {
       setBonusPopup(false);
       setBonusGiven(null);
     }
 
-    // calculation with /without bonus
-    if (currentPlayer === 'X') {
+    if (currentPlayer === "X") {
       setScoreX(prev => prev + totalPoint);
     } else {
       setScoreO(prev => prev + totalPoint);
     }
-
-    console.log(`currentPlayer:${currentPlayer},bonusPopup:${bonusPopup}, bonusGiven:${bonusGiven}, bonusHasGivenTo:${bonusHasGivenTo}`);
-    console.log("bonusPlayer from bonusPoint():", bonusPlayer);
-    console.log("bonusHasGivenTo.current:", bonusHasGivenTo.current);
-    // Set next player in turn for the next move
-    setXIsNext(!xIsNext);
   }
+
+  // ボーナスポップアップを閉じたら bonusGiven をリセットする
+  useEffect(() => {
+    if (!bonusPopup) {
+      setBonusGiven(null);
+    }
+  }, [bonusPopup]);
 
   // Update game status
   // with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
