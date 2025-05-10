@@ -5,59 +5,32 @@ import BarChart from '../barChart/BarChart';
 
 const Board = () => {
   // Initialize variables
-
-  // define function to shuffle points on squares
-  function shufflePoints(){
-    return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
-  }
-
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
   const [playerOfSquares, setPlayerOfSquares] = useState(Array(9).fill(null));
   // set variable for default next player (X) (use boolean, no need function)
   const [xIsNext, setXIsNext] = useState(true);
-  // set variable to store initial score of the players
+  // store initial score of the players
   const [scoreX, setScoreX] = useState(0);
   const [scoreO, setScoreO] = useState(0);
-  // set variable for status (game continue or end)
+  // status (game continue or end)
   const [status, setStatus] = useState("Next Player is X");
-  // set variable for bonus status
-  const [bonusGiven, setBonusGiven] = useState(null);
-  // set variable for message to hide or show (bonus)
+  // message contents of bonus
+  const [bonus, setBonus] = useState(null);
+  // hide or show (bonus)
   const [bonusPopup, setBonusPopup] = useState(false);
-    // set variable for message to hide or show (result)
-  const [result, setResult] = useState(false);
-  //set variable for bonus has given before or not
+  // bonus has given before or not
   const bonusHasGivenTo = useRef({ X: false, O: false });
+  // hide or show (result)
+  const [result, setResult] = useState(false);
 
 
-  // Define function to add bonus point (need argument)
-  function bonusPoint(squares){
-  // square[n] combinations for tic-tac-toe
-    const combinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for ( let i = 0; i < combinations.length; i++ ){
-      // set [a,b,c] as places of squares and check if they match the combination
-      // Destructuring（分割代入:配列の中身をまとめて変数に取り出す書き方）
-      const [a, b, c] = combinations[i];
-      // squares[a] is not empty and squares[a]=[b]=[c]='X or 'O'
-      if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-        console.log(`Bonus combination!->${squares[a]}`);
-        return squares[a];
-      }
-    }
-    // otherwise return null
-    return null;
+  // Define function to shuffle points on squares
+  function shufflePoints(){
+    return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
   }
+
 
   // Define function to handle the game
   function handleClick(n){
@@ -66,9 +39,7 @@ const Board = () => {
       return;
     }
 
-    console.log("CLICKED: handleClick is called!")
-    // Continue :
-    // copy previous array and set it as nextPlayerGetSquares (to create new one)
+    //  Continue :copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerOfSquares = playerOfSquares.slice();
     // set variable for current player and give it a value X or O
     const currentPlayer = xIsNext ? "X" : "O";
@@ -86,26 +57,27 @@ const Board = () => {
     console.log("[handleClick] nextPlayerOfSquares:", nextPlayerOfSquares);
   }
 
-  function calculatePointsAndBonus(squares,  currentPlayer, index){
-    console.log("[calculatePointsAndBonus] squares:", squares, "playerOfSquares:", playerOfSquares);
 
+  //Define function for calculation
+  function calculatePointsAndBonus(squares,  currentPlayer, index){
     // const currentPlayer = squares[lastIndex];
     const basePoint = pointOfSquares[index] || 0;
-    const bonusPlayer = bonusPoint(squares);
+    const bonusPlayer = bonusCombination(squares);
     const isBonus = bonusPlayer === currentPlayer && !bonusHasGivenTo.current[currentPlayer];
-    const bonus = isBonus ? 30 : 0;
-    const totalPoint = basePoint + bonus;
+    const bonusPoint = isBonus ? 30 : 0;
+    const totalPoint = basePoint + bonusPoint;
 
+    console.log("[calculatePointsAndBonus] squares:", squares);
     console.log(`[calculatePointsAndBonus] currentPlayer: ${currentPlayer}`);
-    console.log(`[calculatePointsAndBonus] basePoint: ${basePoint}, bonus: ${bonus}, total: ${totalPoint}`);
+    console.log(`[calculatePointsAndBonus] basePoint: ${basePoint}, bonus: ${bonusPoint}, total: ${totalPoint}`);
 
     if (isBonus) {
       setBonusPopup(true);
-      setBonusGiven(`${bonusPlayer} got ${bonus} bonus point!!`);
+      setBonus(`${bonusPlayer} got ${bonusPoint} bonus point!!`);
       bonusHasGivenTo.current[currentPlayer] = true;
     } else {
       setBonusPopup(false);
-      setBonusGiven(null);
+      setBonus(null);
     }
 
     if (currentPlayer === "X") {
@@ -115,16 +87,52 @@ const Board = () => {
     }
   }
 
-  // ボーナスポップアップを閉じたら bonusGiven をリセットする
+
+  // Define function to add bonus point (need argument)
+  function bonusCombination(squares){
+  // square[n] combinations for tic-tac-toe
+    const combinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    console.log(`[bonusCombination] squares: ${squares}`);
+
+    // set [a,b,c] as places of squares and check if they match the combination
+    // Destructuring（分割代入:配列の中身をまとめて変数に取り出す書き方）
+    for ( let i = 0; i < combinations.length; i++ ){
+      const [a, b, c] = combinations[i];
+      console.log(`[bonusCombination] squares[a,b,c]: ${squares[a]},${squares[b]},${squares[c]}`);
+
+      // squares[a] is not empty and squares[a]=[b]=[c]='X or 'O'
+      if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+
+        console.log(`[bonusCombination] Bonus combination!->${squares[a]}`);
+
+        return squares[a];
+      }
+    }
+    // otherwise return null
+    return null;
+  }
+
+
+  // Reset bonusGiven ボーナスポップアップを閉じたらリセットする
   useEffect(() => {
     if (!bonusPopup) {
-      setBonusGiven(null);
+      setBonus(null);
     }
   }, [bonusPopup]);
 
+
   // Update game status
-  // with useEffect(()=>{1.実行させたい副作用関数},[2.実行タイミングを制御する依存データ配列])
-  useEffect(()=>{
+    useEffect(()=>{
     // set variable to store condition of end end (all squares are filled with players)
     const gameEnd = playerOfSquares.every(player =>player !== null);
 
@@ -152,6 +160,7 @@ const Board = () => {
     //第2引数
   }, [playerOfSquares, scoreX, scoreO, xIsNext]);
 
+
   //Reset the game
   function resetSquares(){
     // set variable to store shuffled points
@@ -165,6 +174,7 @@ const Board = () => {
     setResult(false);
     bonusHasGivenTo.current = { X: false, O: false };
   }
+
 
   // UI Contents of Board.jsx
   return (
@@ -207,7 +217,7 @@ const Board = () => {
             {/* Bonus Popup message */}
             <div className ={`bonus-message ${bonusPopup? 'show':''}`} >
               <p>Tic-Tac-Toe!</p>
-              <p>{bonusGiven}</p>
+              <p>{bonus}</p>
             </div>
 
             {/* Result Popup message */}
