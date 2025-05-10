@@ -83,6 +83,7 @@ const Board = () => {
       setTimeout(() => {
         setBonusPopup(false);
       }, 2000);
+
     } else {
       setBonusPopup(false);
       setBonus(null);
