@@ -55,15 +55,18 @@ const Board = () => {
     console.log("[handleClick] clicked index:", n);
     console.log("[handleClick] currentPlayer:", currentPlayer);
     console.log("[handleClick] nextPlayerOfSquares:", nextPlayerOfSquares);
+    console.log("[handleClick]",bonusPopup);
   }
 
 
   //Define function for calculation
-  function calculatePointsAndBonus(squares,  currentPlayer, index){
-    // const currentPlayer = squares[lastIndex];
+  function calculatePointsAndBonus(squares, currentPlayer, index){
+    // get point written in current square
     const basePoint = pointOfSquares[index] || 0;
-    const bonusPlayer = bonusCombination(squares);
-    const isBonus = bonusPlayer === currentPlayer && !bonusHasGivenTo.current[currentPlayer];
+    // call bonusCombination function
+    const bonusPlayer = bonusCombination(squares, currentPlayer);
+    // condition of bonus
+    const isBonus = bonusPlayer === currentPlayer;
     const bonusPoint = isBonus ? 30 : 0;
     const totalPoint = basePoint + bonusPoint;
 
@@ -75,6 +78,11 @@ const Board = () => {
       setBonusPopup(true);
       setBonus(`${bonusPlayer} got ${bonusPoint} bonus point!!`);
       bonusHasGivenTo.current[currentPlayer] = true;
+
+      // 2秒後にポップアップを非表示に
+      setTimeout(() => {
+        setBonusPopup(false);
+      }, 2000);
     } else {
       setBonusPopup(false);
       setBonus(null);
@@ -89,7 +97,7 @@ const Board = () => {
 
 
   // Define function to add bonus point (need argument)
-  function bonusCombination(squares){
+  function bonusCombination(squares, currentPlayer){
   // square[n] combinations for tic-tac-toe
     const combinations = [
       [0, 1, 2],
@@ -103,6 +111,7 @@ const Board = () => {
     ];
 
     console.log(`[bonusCombination] squares: ${squares}`);
+    console.log(`[bonusCombination] currentPlayer${currentPlayer}`);
 
     // set [a,b,c] as places of squares and check if they match the combination
     // Destructuring（分割代入:配列の中身をまとめて変数に取り出す書き方）
@@ -112,24 +121,18 @@ const Board = () => {
 
       // squares[a] is not empty and squares[a]=[b]=[c]='X or 'O'
       if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+        if(!bonusHasGivenTo.current[squares[a]]){
+          console.log(`[bonusCombination] Bonus combination!->${squares[a]}`);
+          // bonusHasGivenTo.current[squares[a]] = true;
 
-        console.log(`[bonusCombination] Bonus combination!->${squares[a]}`);
-
-        return squares[a];
+          return squares[a];
+        }
+        }
       }
-    }
+
     // otherwise return null
     return null;
   }
-
-
-  // Reset bonusGiven ボーナスポップアップを閉じたらリセットする
-  useEffect(() => {
-    if (!bonusPopup) {
-      setBonus(null);
-    }
-  }, [bonusPopup]);
-
 
   // Update game status
     useEffect(()=>{
