@@ -5,6 +5,10 @@ import BarChart from '../barChart/BarChart';
 
 const Board = () => {
   // Initialize variables
+  // Popup display for Game Start
+  const [gameStarted, setGameStarted] = useState(false);
+  // set player's name
+  const [playerNames, setPlayerNames] = useState({ X: "", O: "" });
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
@@ -30,7 +34,6 @@ const Board = () => {
   function shufflePoints(){
     return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
   }
-
 
   // Define function to handle the game
   function handleClick(n){
@@ -76,7 +79,7 @@ const Board = () => {
 
     if (isBonus) {
       setBonusPopup(true);
-      setBonus(`${bonusPlayer} got ${bonusPoint} bonus point!!`);
+      setBonus(`${bonusPlayer==="X" ? playerNames["X"] : playerNames["O"]} got ${bonusPoint} bonus point!!`);
       bonusHasGivenTo.current[currentPlayer] = true;
 
       // 2秒後にポップアップを非表示に
@@ -125,11 +128,10 @@ const Board = () => {
         if(!bonusHasGivenTo.current[squares[a]]){
           console.log(`[bonusCombination] Bonus combination!->${squares[a]}`);
           // bonusHasGivenTo.current[squares[a]] = true;
-
           return squares[a];
         }
-        }
       }
+    }
 
     // otherwise return null
     return null;
@@ -143,21 +145,21 @@ const Board = () => {
     // if continue the game
     if(!gameEnd){
       //setStatus with next player
-      setStatus(`Next Player is ${xIsNext ? `X` : `O`}`);
+      setStatus(`Next Player is ${xIsNext ? playerNames["X"] : playerNames["O"]}`);
       return;
     }
     // if the game is Over
     // set initial value of winner (it can be reassign in this function)
     let winner = null;
     if (scoreX > scoreO){
-      winner = "X";
+      winner = playerNames["X"];
     } else if (scoreO > scoreX) {
-      winner = "O";
+      winner = playerNames["O"];
     } else {
       winner = "Draw";
     }
     //setStatus with winner or draw
-    const status = winner ==="Draw" ? "Draw" : `Player ${winner} won! `;
+    const status = winner ==="Draw" ? "Draw" : `${winner} won! `;
     setStatus(status);
     // setMessage('hide');
     setResult(true);
@@ -167,7 +169,8 @@ const Board = () => {
 
   //Reset the game
   function resetSquares(){
-    // set variable to store shuffled points
+    setGameStarted(false);
+    setPlayerNames({ X: "", O: "" });
     const shuffled = shufflePoints();
     setPointOfSquares(shuffled);
     setPlayerOfSquares(Array(9).fill(null));
@@ -185,6 +188,37 @@ const Board = () => {
     <>
       <div className="board-info">
 
+      {/* Game Start Popup*/}
+      <div className ={`start-container ${gameStarted ? '':'show'}`}>
+        <p>Click to Game Start</p>
+        <div className="input-container">
+          <div>
+            <p className="green">Player 1</p>
+            <input
+                type="text"
+                name="name"
+                placeholder='Name : X'
+                value = {''}
+                onChange={(event) => setPlayerNames({...playerNames, X : event.target.value})}
+            />
+          </div>
+          <div>
+            <p className="pink">Player 2</p>
+            <input
+                type="text"
+                name="name"
+                placeholder='Name : O'
+                value = {''}
+                onChange={(event) => setPlayerNames({...playerNames, O : event.target.value})}
+            />
+          </div>
+          {console.log(playerNames)}
+        </div>
+        <p>Rule:</p>
+        <button className="start-button" onClick={()=>{setGameStarted(true)}}>Game Start</button>
+      </div>
+
+        {/* Game */}
         <div className="board-container">
           {/* onSquareClick (which calls function handleClick) is given to Square as props,
               value of squares[n] is given to Square as props value */}
@@ -212,10 +246,10 @@ const Board = () => {
 
           <div className='score-board'>
             <div className='x-score'>
-              <p>X : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
+              <p>{playerNames["X"]} : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
             </div>
             <div className='o-score'>
-              <p>O : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
+              <p>{playerNames["O"]} : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
             </div>
 
             {/* Bonus Popup message */}
@@ -228,8 +262,8 @@ const Board = () => {
             <div className={`result ${result? 'show': ''}`}>
               <p>{status}</p>
               <div className="result-details">
-                <p className="details-x"> X : {scoreX} points</p>
-                <p className="details-o">O : {scoreO} points</p>
+                <p className="details-x"> {playerNames["X"]} : {scoreX} points</p>
+                <p className="details-o"> {playerNames["O"]} : {scoreO} points</p>
                 <div>
                   {/* when clicked, call resetSquare function */}
                   <button className='reset-button' onClick={resetSquares}>Try Again</button>
