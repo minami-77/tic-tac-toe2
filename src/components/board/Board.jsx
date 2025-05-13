@@ -2,6 +2,8 @@ import './board.css';
 import Square from '../square/Square'
 import { useState, useEffect, useRef } from "react";
 import BarChart from '../barChart/BarChart';
+// import Typed from 'typed.js';
+
 
 const Board = () => {
   // Initialize variables
@@ -32,7 +34,7 @@ const Board = () => {
 
   // Define function to shuffle points on squares
   function shufflePoints(){
-    return [30,20,10,10,10,-10,-20,-20,-30].sort(()=> Math.random() - 0.5);
+    return [50,30,20,10,10,-10,-20,-30,-50].sort(()=> Math.random() - 0.5);
   }
 
   // Define function to handle the game
@@ -70,7 +72,8 @@ const Board = () => {
     const bonusPlayer = bonusCombination(squares, currentPlayer);
     // condition of bonus
     const isBonus = bonusPlayer === currentPlayer;
-    const bonusPoint = isBonus ? 30 : 0;
+    // set bonus point
+    const bonusPoint = isBonus ? 50 : 0;
     const totalPoint = basePoint + bonusPoint;
 
     console.log("[calculatePointsAndBonus] squares:", squares);
@@ -79,7 +82,7 @@ const Board = () => {
 
     if (isBonus) {
       setBonusPopup(true);
-      setBonus(`${bonusPlayer==="X" ? playerNames["X"] : playerNames["O"]} got ${bonusPoint} bonus point!!`);
+      setBonus(`${bonusPlayer==="X" ? playerNames["X"]!=="" ? playerNames["X"] :"Player1" : playerNames["O"]!=="" ? playerNames["O"] :"Player2"} got ${bonusPoint} bonus point!!`);
       bonusHasGivenTo.current[currentPlayer] = true;
 
       // 2秒後にポップアップを非表示に
@@ -138,33 +141,34 @@ const Board = () => {
   }
 
   // Update game status
-    useEffect(()=>{
+  useEffect(()=>{
     // set variable to store condition of end end (all squares are filled with players)
     const gameEnd = playerOfSquares.every(player =>player !== null);
 
     // if continue the game
     if(!gameEnd){
       //setStatus with next player
-      setStatus(`Next Player is ${xIsNext ? playerNames["X"] : playerNames["O"]}`);
+      setStatus(`Next Player is ${xIsNext ? playerNames["X"]!=="" ? playerNames["X"] :"Player1"  : playerNames["O"]!=="" ? playerNames["O"] :"Player2"}`);
       return;
     }
+
     // if the game is Over
     // set initial value of winner (it can be reassign in this function)
     let winner = null;
     if (scoreX > scoreO){
-      winner = playerNames["X"];
+      winner = playerNames["X"]!=="" ? playerNames["X"] :"Player1";
     } else if (scoreO > scoreX) {
-      winner = playerNames["O"];
+      winner = playerNames["O"]!=="" ? playerNames["O"] :"Player2";
     } else {
       winner = "Draw";
     }
     //setStatus with winner or draw
     const status = winner ==="Draw" ? "Draw" : `${winner} won! `;
     setStatus(status);
-    // setMessage('hide');
     setResult(true);
+
     //第2引数
-  }, [playerOfSquares, scoreX, scoreO, xIsNext]);
+  }, [playerOfSquares, playerNames, scoreX, scoreO, xIsNext]);
 
 
   //Reset the game
@@ -182,6 +186,24 @@ const Board = () => {
     bonusHasGivenTo.current = { X: false, O: false };
   }
 
+  // //Type.js
+  // useEffect(() => {
+  //   const typed = new Typed(typedRef.current, {
+  //     strings: [
+  //       'Highest score wins! Line up 3 to earn a 30-point bonus.',
+  //       '得点の多い方が勝ち! 3つ並べるとボーナス30点'
+  //       ],
+  //     typeSpeed: 100,
+  //     loop:true
+
+  //   });
+
+  //   return () => {
+  //     // Destroy Typed instance during cleanup to stop animation
+  //     typed.destroy();
+  //   };
+  // }, []);
+
 
   // UI Contents of Board.jsx
   return (
@@ -190,15 +212,15 @@ const Board = () => {
 
       {/* Game Start Popup*/}
       <div className ={`start-container ${gameStarted ? '':'show'}`}>
-        <p>Click to Game Start</p>
+      <p>Enter Player's Name to Start!</p>
         <div className="input-container">
           <div>
             <p className="green">Player 1</p>
             <input
                 type="text"
-                name="name"
-                placeholder='Name : X'
-                value = {''}
+                name="playerNames1"
+                placeholder='Player1: Name'
+                value = {playerNames["X"]}
                 onChange={(event) => setPlayerNames({...playerNames, X : event.target.value})}
             />
           </div>
@@ -206,15 +228,15 @@ const Board = () => {
             <p className="pink">Player 2</p>
             <input
                 type="text"
-                name="name"
-                placeholder='Name : O'
-                value = {''}
+                name="playerNames2"
+                placeholder='Player2: Name'
+                value = {playerNames["O"]}
                 onChange={(event) => setPlayerNames({...playerNames, O : event.target.value})}
             />
           </div>
           {console.log(playerNames)}
         </div>
-        <p>Rule:</p>
+
         <button className="start-button" onClick={()=>{setGameStarted(true)}}>Game Start</button>
       </div>
 
@@ -241,20 +263,19 @@ const Board = () => {
 
         <div className="info-container">
           <div className="status">
-            <p>{status}</p>
+            <p className={xIsNext ? "green" : "pink"}>{status}</p>
           </div>
 
           <div className='score-board'>
             <div className='x-score'>
-              <p>{playerNames["X"]} : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
+              <p>{playerNames["X"]!=="" ? playerNames["X"] :"Player1"} : {scoreX} Points</p><BarChart score={scoreX} player={'X'}/>
             </div>
             <div className='o-score'>
-              <p>{playerNames["O"]} : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
+              <p>{playerNames["O"]!=="" ? playerNames["O"] :"Player2"} : {scoreO} Points</p><BarChart score={scoreO}  player={'O'}/>
             </div>
 
             {/* Bonus Popup message */}
             <div className ={`bonus-message ${bonusPopup? 'show':''}`} >
-              <p>Tic-Tac-Toe!</p>
               <p>{bonus}</p>
             </div>
 
@@ -262,8 +283,8 @@ const Board = () => {
             <div className={`result ${result? 'show': ''}`}>
               <p>{status}</p>
               <div className="result-details">
-                <p className="details-x"> {playerNames["X"]} : {scoreX} points</p>
-                <p className="details-o"> {playerNames["O"]} : {scoreO} points</p>
+                <p className="details-x"> {playerNames["X"]!=="" ? playerNames["X"] :"Player1"} : {scoreX} points</p>
+                <p className="details-o"> {playerNames["O"]!=="" ? playerNames["O"] :"Player2"} : {scoreO} points</p>
                 <div>
                   {/* when clicked, call resetSquare function */}
                   <button className='reset-button' onClick={resetSquares}>Try Again</button>

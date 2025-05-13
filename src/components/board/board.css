@@ -21,6 +21,7 @@ p{
 .board-info{
   display: flex;
   justify-content: space-between;
+  gap:1rem;
   align-items: center;
   font-family: cursive;
   font-size: 2rem;
@@ -48,16 +49,21 @@ p{
 /* Info */
 .info-container{
   margin:auto;
+  padding:1rem;
 }
 
 .status{
   color: rgb(70, 70, 70);
   margin: 1rem auto;
+  padding: 0.5rem;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 .score-board{
   margin:3rem auto;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgb(125, 125, 125);
   padding:1rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
@@ -74,15 +80,14 @@ p{
   font-size: 1.5rem;
   font-weight: bold;
   color: rgb(254, 90, 178);
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
 }
 
 .reset-button{
   color: rgb(70, 70, 70);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-family:cursive;
   font-weight: bold;
-  margin-top: 0.5rem;
   padding:1rem;
   border-radius: 10px;
   border: 0.2rem solid white;
@@ -97,8 +102,9 @@ p{
 }
 
 .reset-button:hover{
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   border-color: rgba(137, 43, 226, 0.7);
+  background-color: rgba(209, 170, 245, 0.5);
   box-shadow: 0px 0px 20px white;
 }
 
@@ -108,14 +114,14 @@ p{
   /* Child */
   position:absolute;
   /* absolute position to parent (child's top-left point comes center)*/
-  top: 40%;
+  top: 45%;
   left: 50%;
   /* translate position to center (x,y axis)*/
   transform: translate(-50%,-50%);
   width:90%;
-  background-color: rgb(194, 233, 255);
+  background-color: rgb(205, 236, 255);
   color: rgb(70, 70, 70);
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-shadow: 0 0 5px white;
   padding: 2rem;
   border: 2px solid white;
@@ -139,15 +145,15 @@ p{
 
 .green{
   color: aquamarine;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
 }
 .pink{
   color: rgb(254, 90, 178);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
 }
 
 input{
@@ -160,15 +166,16 @@ input{
 
 .start-button{
   color: rgb(70, 70, 70);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-family:cursive;
   font-weight: bold;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
   padding:0.5rem;
   border-radius: 10px;
-  border: 0.2rem solid white;
+  border: 0.2rem solid rgba(137, 43, 226, 0.7);
   box-shadow: 0px 0px 5px white;
   transition:all 0.2s;
+  animation: fluffy 2s infinite;
 
   /* ボタン同士のズレ防止  */
   /* 行全体(ボタン）の高さ指定 */
@@ -178,9 +185,18 @@ input{
 }
 
 .start-button:hover{
-  font-size: 1.25rem;
-  border-color: rgba(137, 43, 226, 0.7);
+  font-size: 1.5rem;
+  background-color: rgba(137, 43, 226, 0.2);
   box-shadow: 0px 0px 20px white;
+}
+
+@keyframes fluffy {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 /* Bonus */
@@ -195,6 +211,7 @@ input{
 
   background-color: rgba(243, 231, 104, 0.85);
   color: rgb(70, 70, 70);
+  font-size:1.5rem;
   text-shadow: 0 0 5px white;
   padding: 2rem;
   border: 2px solid white;
@@ -250,7 +267,7 @@ input{
 
 .result.show{
   display:block;
-  animation: result-fadein 2s backwards;
+  animation: result-fadein 1s backwards;
 }
 
 .result-details{
@@ -279,7 +296,7 @@ input{
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.25);
+    transform: translate(-50%, -50%) scale(1.2);
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
