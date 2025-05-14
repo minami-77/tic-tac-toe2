@@ -22,12 +22,14 @@ body{
   background-image: url(./assets/16352003_v935-aum-10-a.jpg);
   background-size: cover;
   background-position: center;
-  height:100vh;
+  min-height:100vh;
+  padding:1rem;
   /* 上下中央寄せ */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 }
 
 .container{
@@ -39,7 +41,7 @@ body{
 .title{
   color:rgb(70, 70, 70);
   font-family: cursive;
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: bold;
   width: fit-content;
   /* padding: 1.5rem; */
