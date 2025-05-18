@@ -63,13 +63,13 @@ body{
 
 /* ズレ防止  */
 .description p{
-  height: 2.5rem;
+  height: 3.5rem;
   /* 縦方向の中央揃えになる */
-  line-height: 2.5rem;
-  /* はみ出しの場合、切る */
-  overflow: hidden;
+  line-height: 2rem;
+  /* はみ出しの場合 */
+  overflow:revert;
   /* 複数行にならないように */
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .game-container{
