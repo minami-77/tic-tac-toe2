@@ -208,6 +208,10 @@ const Board = () => {
   // UI Contents of Board.jsx
   return (
     <>
+      <div className="status">
+        <p className={xIsNext ? "green" : "pink"}>{status}</p>
+      </div>
+
       <div className="board-info">
 
       {/* Game Start Popup*/}
@@ -262,9 +266,7 @@ const Board = () => {
         </div>
 
         <div className="info-container">
-          <div className="status">
-            <p className={xIsNext ? "green" : "pink"}>{status}</p>
-          </div>
+
 
           <div className='score-board'>
             <div className='x-score'>

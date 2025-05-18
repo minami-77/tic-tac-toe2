@@ -35,6 +35,16 @@ p{
 }
 
 /* Board */
+
+.status{
+  color: rgb(70, 70, 70);
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
 .board-container{
   text-align: center;
   margin: auto;
@@ -56,19 +66,10 @@ p{
   padding:1rem;
 }
 
-.status{
-  color: rgb(70, 70, 70);
-  margin: 1rem;
-  padding: 0.5rem;
-  border-radius: 50px;
-  background-color: rgba(255, 255, 255, 0.7);
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
 .score-board{
   margin:1rem;
   background-color: rgb(125, 125, 125);
-  padding:1rem;
+  padding: 2rem 1rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
@@ -148,12 +149,14 @@ p{
 }
 
 .green{
+  font-family: cursive;
   color: aquamarine;
   font-size: 1.75rem;
   font-weight: bold;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
 }
 .pink{
+  font-family: cursive;
   color: rgb(254, 90, 178);
   font-size: 1.75rem;
   font-weight: bold;
