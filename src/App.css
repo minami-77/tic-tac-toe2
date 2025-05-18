@@ -66,10 +66,6 @@ body{
   height: 3.5rem;
   /* 縦方向の中央揃えになる */
   line-height: 2rem;
-  /* はみ出しの場合 */
-  overflow:revert;
-  /* 複数行にならないように */
-  /* white-space: nowrap; */
 }
 
 .game-container{
