@@ -10,12 +10,9 @@ p{
   font-family: cursive;
   font-size: 2rem;
   font-weight: bold;
-  /* Parent */
-  position: relative;
 }
 
 /* Board */
-
 .status{
   color: rgb(70, 70, 70);
   margin: 1rem;
@@ -316,21 +313,27 @@ input{
     /* Child */
     position:absolute;
     /* absolute position to parent (child's top-left point comes center)*/
-    top: 0%;
+    top: 5%;
     left: 50%;
     /* translate position to center (x,y axis)*/
     transform: translateX(-50%);
-    width:90%;
-    background-color: rgb(205, 236, 255);
-    color: rgb(70, 70, 70);
-    font-size: 1.5rem;
-    text-shadow: 0 0 5px white;
-    padding: 2rem;
-    border: 2px solid white;
-    border-radius: 50px;
-    box-shadow: 0px 0px 5px white;
-
-    display: none;
   }
-
+  .bonus-message {
+    /* Child */
+    position:absolute;
+    /* absolute position to parent (child's top-left point comes center)*/
+    top: 10%;
+    left: 50%;
+    /* translate position to center (x,y axis)*/
+    transform: translateX(-50%);
+  }
+  .result{
+    /* Child */
+    position:absolute;
+    /* absolute position to parent (child's top-left point comes center)*/
+    top: 5%;
+    left: 50%;
+    /* translate position to center (x,y axis)*/
+    transform: translateX(-50%);
+  }
 }
