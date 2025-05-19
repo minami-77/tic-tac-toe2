@@ -2,8 +2,6 @@ import './board.css';
 import Square from '../square/Square'
 import { useState, useEffect, useRef } from "react";
 import BarChart from '../barChart/BarChart';
-// import Typed from 'typed.js';
-
 
 const Board = () => {
   // Initialize variables
@@ -13,6 +11,8 @@ const Board = () => {
   const [playerNames, setPlayerNames] = useState({ X: "", O: "" });
   // set an array for point of each squares, using useState so that it can be changed later
   const [pointOfSquares, setPointOfSquares] = useState(()=>shufflePoints());
+  //set an array for initial state of squares(hide points). it shows points if clicked
+  const [showPointSquares, setShowPointSquares] = useState(Array(9).fill(false));
   // set an array for player who get each squares,using useState so that it can be changed later [X, O, null,...]
   const [playerOfSquares, setPlayerOfSquares] = useState(Array(9).fill(null));
   // set variable for default next player (X) (use boolean, no need function)
@@ -46,12 +46,16 @@ const Board = () => {
 
     //  Continue :copy previous array and set it as nextPlayerGetSquares (to create new one)
     const nextPlayerOfSquares = playerOfSquares.slice();
+    const nextShowPointSquares = showPointSquares.slice();
     // set variable for current player and give it a value X or O
     const currentPlayer = xIsNext ? "X" : "O";
     // update the nth nextPlayerGetSquare(copied one) with current player
     nextPlayerOfSquares[n] = currentPlayer;
+    // flip the square and show point
+    nextShowPointSquares[n] = true;
     // update the newly created array(copied one)
     setPlayerOfSquares(nextPlayerOfSquares);
+    setShowPointSquares(nextShowPointSquares);
     // Set next player in turn for the next move
     setXIsNext(!xIsNext);
     // Call calculation function
@@ -178,6 +182,7 @@ const Board = () => {
     const shuffled = shufflePoints();
     setPointOfSquares(shuffled);
     setPlayerOfSquares(Array(9).fill(null));
+    setShowPointSquares(Array(9).fill(false));
     setScoreX(0);
     setScoreO(0);
     setXIsNext(true);
@@ -185,25 +190,6 @@ const Board = () => {
     setResult(false);
     bonusHasGivenTo.current = { X: false, O: false };
   }
-
-  // //Type.js
-  // useEffect(() => {
-  //   const typed = new Typed(typedRef.current, {
-  //     strings: [
-  //       'Highest score wins! Line up 3 to earn a 30-point bonus.',
-  //       '得点の多い方が勝ち! 3つ並べるとボーナス30点'
-  //       ],
-  //     typeSpeed: 100,
-  //     loop:true
-
-  //   });
-
-  //   return () => {
-  //     // Destroy Typed instance during cleanup to stop animation
-  //     typed.destroy();
-  //   };
-  // }, []);
-
 
   // UI Contents of Board.jsx
   return (
@@ -249,19 +235,19 @@ const Board = () => {
           {/* onSquareClick (which calls function handleClick) is given to Square as props,
               value of squares[n] is given to Square as props value */}
           <div className="row">
-            <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerOfSquares[0]} />
-            <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerOfSquares[1]} />
-            <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerOfSquares[2]} />
+            <Square onSquareClick={() => handleClick(0)} point={pointOfSquares[0]} player={playerOfSquares[0]} showPoint={showPointSquares[0]} />
+            <Square onSquareClick={() => handleClick(1)} point={pointOfSquares[1]} player={playerOfSquares[1]} showPoint={showPointSquares[1]}/>
+            <Square onSquareClick={() => handleClick(2)} point={pointOfSquares[2]} player={playerOfSquares[2]} showPoint={showPointSquares[2]}/>
           </div>
           <div className="row">
-            <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerOfSquares[3]} />
-            <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerOfSquares[4]} />
-            <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerOfSquares[5]} />
+            <Square onSquareClick={() => handleClick(3)} point={pointOfSquares[3]} player={playerOfSquares[3]} showPoint={showPointSquares[3]}/>
+            <Square onSquareClick={() => handleClick(4)} point={pointOfSquares[4]} player={playerOfSquares[4]} showPoint={showPointSquares[4]}/>
+            <Square onSquareClick={() => handleClick(5)} point={pointOfSquares[5]} player={playerOfSquares[5]} showPoint={showPointSquares[5]}/>
           </div>
           <div className="row">
-            <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerOfSquares[6]} />
-            <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerOfSquares[7]} />
-            <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerOfSquares[8]} />
+            <Square onSquareClick={() => handleClick(6)} point={pointOfSquares[6]} player={playerOfSquares[6]} showPoint={showPointSquares[6]}/>
+            <Square onSquareClick={() => handleClick(7)} point={pointOfSquares[7]} player={playerOfSquares[7]} showPoint={showPointSquares[7]}/>
+            <Square onSquareClick={() => handleClick(8)} point={pointOfSquares[8]} player={playerOfSquares[8]} showPoint={showPointSquares[8]}/>
           </div>
         </div>
 
