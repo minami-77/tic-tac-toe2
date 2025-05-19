@@ -1,3 +1,6 @@
+Score Match XO is an enhanced Tic-Tac-Toe game built with React and Vite.. The player with the highest total score wins. Matching three in a row—vertically, horizontally, or diagonally—gives a 30-point bonus.
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
