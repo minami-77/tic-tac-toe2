@@ -40,7 +40,7 @@ body{
 
 .title{
   color:rgb(70, 70, 70);
-  font-family: cursive;
+  font-family: "Limelight", sans-serif;
   font-size: 3.5rem;
   font-weight: bold;
   width: fit-content;
@@ -52,7 +52,7 @@ body{
 /* Type.js */
 .description{
   color:rgb(70, 70, 70);
-  font-family: cursive;
+  font-family: "Delius", cursive;
   font-size: 1.25rem;
   font-weight: bold;
   border-radius: 50px;
