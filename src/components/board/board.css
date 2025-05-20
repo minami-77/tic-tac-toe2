@@ -245,7 +245,7 @@ input{
   font-family: "Limelight", sans-serif;
   font-size: 3.5rem;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
   padding: 3rem;
   border: 2px solid white;
   border-radius: 20px;
